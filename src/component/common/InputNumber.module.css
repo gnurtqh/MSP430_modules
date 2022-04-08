@@ -1,0 +1,19 @@
+.inputnumber{
+  font-family: sans-serif;
+  font-size: 80%;
+  padding: 4px;
+}
+.label{
+  padding: 4px;
+  font-weight: 600;
+}
+.input{
+  border: 1px solid #666;
+  padding: 4px;
+  border-radius: 8px;
+  max-width: 120px;
+  width: 100%;
+}
+.input:focus{
+  outline: none;
+}

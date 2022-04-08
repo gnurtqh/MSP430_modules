@@ -1,0 +1,27 @@
+.base {
+  width: 32px;
+  height: 32px;
+  border: 2px solid #777;
+  border-radius: 8px;
+  background: #555;
+  box-shadow: -3px 3px 6px #444, 3px -3px 6px #ffffff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  cursor: pointer;
+}
+.pushbutton {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: linear-gradient(225deg, #d00, #944);
+  box-shadow: -2px 2px 2px #333, 2px -2px 2px #555;
+}
+.pushbuttonon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #a00;
+  box-shadow: inset -1px 1px 2px #333, inset 1px -1px 2px #a00;
+}

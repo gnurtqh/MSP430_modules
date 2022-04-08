@@ -1,0 +1,17 @@
+.configbtn {
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  border-radius: 6px;
+  background: #f5f5f5;
+  box-shadow: rgb(255, 255, 255) 1.76px -1.76px 3.52px 0px,
+    rgb(204, 204, 204) -1.76px 1.76px 3.52px 0px;
+  transition: box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+.configbtn:active {
+  box-shadow: 0.1em -0.1em 0.2em transparent, -0.1em 0.1em 0.2em transparent,
+    inset 0.1em -0.1em 0.3em 0.1em #fff, inset -0.1em 0.1em 0.4em #ccc;
+}

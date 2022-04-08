@@ -1,0 +1,11 @@
+.diode {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  border-radius: 50px;
+  background: linear-gradient(225deg, #f0f0f0, #cacaca);
+  box-shadow: -4px 4px 8px #bebebe, 4px -4px 8px #ffffff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}

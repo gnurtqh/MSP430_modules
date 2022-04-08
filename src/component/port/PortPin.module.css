@@ -1,0 +1,41 @@
+.portpin {
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 7px;
+  background: #f5f5f5;
+  box-shadow: rgb(255, 255, 255) 4.8px -4.8px 9.6px 0px,
+    rgb(204, 204, 204) -4.8px 4.8px 9.6px 0px,
+    rgb(238, 238, 238) 4.8px -4.8px 4.8px 0px inset,
+    rgb(255, 255, 255) -4.8px 4.8px 4.8px 0px inset;
+  transition: box-shadow 0.2s;
+}
+.portpin:active {
+  box-shadow: 0.1em -0.1em 0.2em transparent, -0.1em 0.1em 0.2em transparent,
+    inset 0.1em -0.1em 0.3em 0.1em #fff, inset -0.1em 0.1em 0.4em #ccc;
+}
+.border {
+  position: relative;
+  height: 18px;
+  width: 32px;
+  background: black;
+
+  clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+}
+.hexagon {
+  cursor: pointer;
+  top: 1px;
+  left: 1px;
+  position: absolute;
+  height: 16px;
+  width: 30px;
+  background: #f5f5f5;
+  clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+}
+.label {
+  font-family: sans-serif;
+  padding: 0px 8px;
+  font-weight: 600;
+  font-size: 80%;
+}

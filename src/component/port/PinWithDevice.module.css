@@ -1,0 +1,53 @@
+
+.selectbtn {
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  border-radius: 6px;
+  background: #f5f5f5;
+  box-shadow: 0.1em -0.1em 0.2em transparent, -0.1em 0.1em 0.2em transparent,
+  inset 0.1em -0.1em 0.3em 0.1em #fff, inset -0.1em 0.1em 0.4em #ccc;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+.deletebtn{
+  cursor: pointer;
+  user-select: none;
+  background: #f5f5f5;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+.pinwithdevice{
+  display: flex;
+  gap: 16px;
+  width: 134px;
+}
+.device{
+  border-radius: 6px;
+  box-shadow: rgb(255, 255, 255) 4.8px -4.8px 9.6px 0px,
+    rgb(204, 204, 204) -4.8px 4.8px 9.6px 0px,
+    rgb(238, 238, 238) 4.8px -4.8px 4.8px 0px inset,
+    rgb(255, 255, 255) -4.8px 4.8px 4.8px 0px inset;
+  display: flex;
+  gap: 8px
+}
+.listoption{
+  display: flex;
+  gap: 8px;
+}
+
+.option{
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid #444;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  font-family: sans-serif;
+  font-size: 80%;
+  padding: 8px;
+}
