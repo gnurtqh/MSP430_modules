@@ -2,13 +2,13 @@ import { useState } from "react";
 import ConfigMemory from "./ConfigMemory";
 import styles from "./Memory.module.css";
 import PropTypes from "prop-types";
-import { getSlice } from "../../function/memory";
+import { getElementMemory, getSliceMemory } from "../../function/memory";
 import MemoryWriter from "./MemoryWriter";
 
 function Memory({ memory }) {
   const [start, setStart] = useState(0);
   const [numberType, setNumberType] = useState(0);
-  const data = getSlice(memory, start, 15);
+  const data = getSliceMemory(memory, start, 15);
   return (
     <div className={styles.memory}>
       <div className={styles.top}>
@@ -27,11 +27,7 @@ function Memory({ memory }) {
         {data.map((item, index) => (
           <div key={index} className={styles.element}>
             <span>{start + index}:</span>
-            <span>
-              {numberType
-                ? item
-                : (item + 256).toString(2).split("").splice(1, 8).join("")}
-            </span>
+            <span>{numberType ? item : getElementMemory(item)}</span>
           </div>
         ))}
       </div>
@@ -39,6 +35,6 @@ function Memory({ memory }) {
   );
 }
 Memory.propTypes = {
-  memory: PropTypes.array,
+  memory: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 export default Memory;

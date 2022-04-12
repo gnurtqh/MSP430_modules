@@ -15,11 +15,11 @@ function ConfigMemory({ start, onStartChange, numberType, onTypeChange }) {
               label="Display memory from"
               value={start}
               onChange={(value) =>
-                onStartChange(~~value > 10000 ? 10000 : ~~value)
+                onStartChange(~~value > 65521 ? 65521 : ~~value)
               }
             />
             <SelectComponent
-              label="Number format"
+              label="Numeral system"
               value={numberType}
               onChange={onTypeChange}
               options={[
@@ -37,5 +37,10 @@ function ConfigMemory({ start, onStartChange, numberType, onTypeChange }) {
     </Popover>
   );
 }
-ConfigMemory.propTypes = {};
+ConfigMemory.propTypes = {
+  start: PropTypes.number.isRequired,
+  onStartChange: PropTypes.func.isRequired,
+  numberType: PropTypes.number.isRequired,
+  onTypeChange: PropTypes.func.isRequired,
+};
 export default ConfigMemory;

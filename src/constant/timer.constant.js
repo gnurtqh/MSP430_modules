@@ -33,14 +33,23 @@ export const LIST_TIMERA_BLOCK = [
   {
     blockCtlAddress: TACCTL0_ADDRESS,
     blockRegAddress: TACCR0_ADDRESS,
+    periodAddress: 65538,
+    ratioAddress: 65540,
+    periodIntrAddress: 65542,
   },
   {
     blockCtlAddress: TACCTL1_ADDRESS,
     blockRegAddress: TACCR1_ADDRESS,
+    periodAddress: 65544,
+    ratioAddress: 65546,
+    periodIntrAddress: 65548,
   },
   {
     blockCtlAddress: TACCTL2_ADDRESS,
     blockRegAddress: TACCR2_ADDRESS,
+    periodAddress: 65550,
+    ratioAddress: 65552,
+    periodIntrAddress: 65554,
   },
 ];
 
@@ -48,29 +57,50 @@ export const LIST_TIMERB_BLOCK = [
   {
     blockCtlAddress: TBCCTL0_ADDRESS,
     blockRegAddress: TBCCR0_ADDRESS,
+    periodAddress: 65556,
+    ratioAddress: 65558,
+    periodIntrAddress: 65560,
   },
   {
     blockCtlAddress: TBCCTL1_ADDRESS,
     blockRegAddress: TBCCR1_ADDRESS,
+    periodAddress: 65562,
+    ratioAddress: 65564,
+    periodIntrAddress: 65566,
   },
   {
     blockCtlAddress: TBCCTL2_ADDRESS,
     blockRegAddress: TBCCR2_ADDRESS,
+    periodAddress: 65568,
+    ratioAddress: 65570,
+    periodIntrAddress: 65572,
   },
   {
     blockCtlAddress: TBCCTL3_ADDRESS,
     blockRegAddress: TBCCR3_ADDRESS,
+    periodAddress: 65574,
+    ratioAddress: 65576,
+    periodIntrAddress: 65578,
   },
   {
     blockCtlAddress: TBCCTL4_ADDRESS,
     blockRegAddress: TBCCR4_ADDRESS,
+    periodAddress: 65580,
+    ratioAddress: 65582,
+    periodIntrAddress: 65584,
   },
   {
     blockCtlAddress: TBCCTL5_ADDRESS,
     blockRegAddress: TBCCR5_ADDRESS,
+    periodAddress: 65586,
+    ratioAddress: 65588,
+    periodIntrAddress: 65590,
   },
   {
     blockCtlAddress: TBCCTL6_ADDRESS,
     blockRegAddress: TBCCR6_ADDRESS,
+    periodAddress: 65592,
+    ratioAddress: 65594,
+    periodIntrAddress: 65596,
   },
 ];

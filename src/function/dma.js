@@ -1,11 +1,11 @@
 import {
   getBit,
   getByte,
-  getRegister,
+  get16bitRegister,
   getWord,
   setBit,
   setByte,
-  setRegister,
+  set16bitRegister,
   setWord,
 } from "./memory";
 
@@ -36,14 +36,14 @@ export function transferMode(memory, dmaxctlAddress) {
 }
 
 export function setTransferMode(memory, dmaxctlAddress, value) {
-  const firstBit = value % 2;
-  const thirdBit = ~~(value / 4);
-  const secondBit = (value - firstBit - 4 * thirdBit) / 2;
-  let dmaxctlRegister = getRegister(memory, dmaxctlAddress);
+  const firstBit = value & 1;
+  const secondBit = (value >> 1) & 1;
+  const thirdBit = (value >> 2) & 1;
+  let dmaxctlRegister = get16bitRegister(memory, dmaxctlAddress);
   dmaxctlRegister[12] = firstBit;
   dmaxctlRegister[13] = secondBit;
   dmaxctlRegister[14] = thirdBit;
-  return setRegister(memory, dmaxctlAddress, dmaxctlRegister);
+  return set16bitRegister(memory, dmaxctlAddress, dmaxctlRegister);
 }
 
 export function desInc(memory, dmaxctlAddress) {
@@ -52,12 +52,12 @@ export function desInc(memory, dmaxctlAddress) {
   return 2 * secondBit + firstBit;
 }
 export function setDesInc(memory, dmaxctlAddress, value) {
-  const firstBit = value % 2;
-  const secondBit = ~~(value / 2);
-  let dmaxctlRegister = getRegister(memory, dmaxctlAddress);
+  const firstBit = value & 1;
+  const secondBit = (value >> 1) & 1;
+  let dmaxctlRegister = get16bitRegister(memory, dmaxctlAddress);
   dmaxctlRegister[10] = firstBit;
   dmaxctlRegister[11] = secondBit;
-  return setRegister(memory, dmaxctlAddress, dmaxctlRegister);
+  return set16bitRegister(memory, dmaxctlAddress, dmaxctlRegister);
 }
 
 export function srcInc(memory, dmaxctlAddress) {
@@ -68,10 +68,10 @@ export function srcInc(memory, dmaxctlAddress) {
 export function setSrcInc(memory, dmaxctlAddress, value) {
   const firstBit = value % 2;
   const secondBit = ~~(value / 2);
-  let dmaxctlRegister = getRegister(memory, dmaxctlAddress);
+  let dmaxctlRegister = get16bitRegister(memory, dmaxctlAddress);
   dmaxctlRegister[8] = firstBit;
   dmaxctlRegister[9] = secondBit;
-  return setRegister(memory, dmaxctlAddress, dmaxctlRegister);
+  return set16bitRegister(memory, dmaxctlAddress, dmaxctlRegister);
 }
 
 export function desByte(memory, dmaxctlAddress) {
@@ -102,9 +102,9 @@ export function desAddress(memory, daAddress) {
 }
 
 export function setDesAddress(memory, daAddress, value) {
-  const newMemory = setWord(memory, daAddress, value % 65536);
+  const newMemory = setWord(memory, daAddress, value & 0xffff);
   if (value < 65536) return newMemory;
-  else return setWord(newMemory, daAddress, ~~(value / 65536));
+  else return setWord(newMemory, daAddress, value >> 16);
 }
 export function srcAddress(memory, saAddress) {
   const firstWord = getWord(memory, saAddress);
@@ -113,9 +113,9 @@ export function srcAddress(memory, saAddress) {
 }
 
 export function setSrcAddress(memory, saAddress, value) {
-  const newMemory = setWord(memory, saAddress, value % 65536);
+  const newMemory = setWord(memory, saAddress, value & 0xffff);
   if (value < 65536) return newMemory;
-  else return setWord(newMemory, saAddress, ~~(value / 65536));
+  else return setWord(newMemory, saAddress, value >> 16);
 }
 export function size(memory, szAddress) {
   return getWord(memory, szAddress);

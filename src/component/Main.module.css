@@ -23,7 +23,7 @@ body{
 }
 .timerwithport{
   display: flex;
-  gap: 16px;
+  gap: 24px;
 }
 .port {
   display: flex;

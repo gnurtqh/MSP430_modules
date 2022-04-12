@@ -1,17 +1,17 @@
 import {
   getBit,
-  getRegister,
+  get16bitRegister,
   getWord,
   setBit,
-  setRegister,
+  set16bitRegister,
   setWord,
 } from "./memory";
 
-export function taccrValue(memory, taccrAddress) {
+export function ccrValue(memory, taccrAddress) {
   return getWord(memory, taccrAddress);
 }
 
-export function setTaccrValue(memory, taccrAddress, value) {
+export function setCcrValue(memory, taccrAddress, value) {
   return setWord(memory, taccrAddress, value);
 }
 
@@ -22,12 +22,12 @@ export function captureMode(memory, tacctlAddress) {
 }
 
 export function setCaptureMode(memory, tacctlAddress, value) {
-  const firstBit = value % 2;
-  const secondBit = ~~(value / 2);
-  let tacctlRegister = getRegister(memory, tacctlAddress);
+  const firstBit = value & 1;
+  const secondBit = (value >> 1) & 1;
+  let tacctlRegister = get16bitRegister(memory, tacctlAddress);
   tacctlRegister[14] = firstBit;
   tacctlRegister[15] = secondBit;
-  return setRegister(memory, tacctlAddress, tacctlRegister);
+  return set16bitRegister(memory, tacctlAddress, tacctlRegister);
 }
 
 export function mode(memory, tacctlAddress) {
@@ -46,14 +46,14 @@ export function outMode(memory, tacctlAddress) {
 }
 
 export function setOutMode(memory, tacctlAddress, value) {
-  const firstBit = value % 2;
-  const thirdBit = ~~(value / 4);
-  const secondBit = (value - firstBit - 4 * thirdBit) / 2;
-  let tacctlRegister = getRegister(memory, tacctlAddress);
+  const firstBit = value & 1;
+  const secondBit = (value >> 1) & 1;
+  const thirdBit = (value >> 2) & 1;
+  let tacctlRegister = get16bitRegister(memory, tacctlAddress);
   tacctlRegister[5] = firstBit;
   tacctlRegister[6] = secondBit;
   tacctlRegister[7] = thirdBit;
-  return setRegister(memory, tacctlAddress, tacctlRegister);
+  return set16bitRegister(memory, tacctlAddress, tacctlRegister);
 }
 
 export function interruptEnabled(memory, tacctlAddress) {
@@ -64,10 +64,51 @@ export function setInterruptEnabled(memory, tacctlAddress, value) {
   return setBit(memory, tacctlAddress, 4, value);
 }
 
+export function outBit(memory, tacctlAddress) {
+  return getBit(memory, tacctlAddress, 2);
+}
+
+export function setOutBit(memory, tacctlAddress, value) {
+  return setBit(memory, tacctlAddress, 2, value);
+}
+
 export function interruptFlag(memory, tacctlAddress) {
   return getBit(memory, tacctlAddress, 0);
 }
 
 export function setInterruptFlag(memory, tacctlAddress, value) {
   return setBit(memory, tacctlAddress, 0, value);
+}
+
+// temp value
+
+export function getRatio(memory, ratioAddress) {
+  return getWord(memory, ratioAddress) / 1000;
+}
+
+export function setRatio(memory, ratioAddress, value) {
+  return setWord(memory, ratioAddress, ~~(1000 * value));
+}
+
+export function getPeriod(memory, periodAddress) {
+  return getWord(memory, periodAddress);
+}
+
+export function setPeriod(memory, periodAddress, value) {
+  return setWord(memory, periodAddress, value);
+}
+
+export function getPeriodIntrAddress(memory, periodIntrAddress) {
+  return getWord(memory, periodIntrAddress);
+}
+
+export function setPeriodIntrAddress(memory, periodIntrAddress, value) {
+  return setWord(memory, periodIntrAddress, value);
+}
+
+export function resetTemp(memory, block) {
+  const newMemory = setRatio(memory, block.ratioAddress, 0);
+  newMemory = setPeriod(newMemory, block.periodAddress, 0);
+  newMemory = setPeriodIntrAddress(newMemory, block.periodIntrAddress, 0);
+  return newMemory;
 }

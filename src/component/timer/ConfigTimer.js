@@ -7,8 +7,10 @@ import PropTypes from "prop-types";
 import {
   clockSource,
   counterMode,
+  divider,
   setClockSource,
   setCounterMode,
+  setDivider,
 } from "../../function/timer";
 import SelectComponent from "../common/SelectComponent";
 function ConfigTimer({ ctlAddress }) {
@@ -40,6 +42,19 @@ function ConfigTimer({ ctlAddress }) {
               options={[
                 { value: 1, label: "ACLK" },
                 { value: 2, label: "SMCLK" },
+              ]}
+            />
+            <SelectComponent
+              label="Input divider"
+              value={divider(memory, ctlAddress)}
+              onChange={(value) =>
+                setMemory(setDivider(memory, ctlAddress, value))
+              }
+              options={[
+                { value: 0, label: "/1" },
+                { value: 1, label: "/2" },
+                { value: 2, label: "/4" },
+                { value: 3, label: "/8" },
               ]}
             />
           </div>

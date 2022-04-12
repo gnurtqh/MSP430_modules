@@ -12,7 +12,7 @@ import Memory from "./memory/Memory";
 import PinWithDevice from "./port/PinWithDevice";
 import Timer from "./timer/Timer";
 
-export default function Main({ memory, isRunning, onStateChange }) {
+export default function Main({ memory, state, onStateChange }) {
   return (
     <div className={styles.main}>
       <div className={styles.board}>
@@ -30,7 +30,7 @@ export default function Main({ memory, isRunning, onStateChange }) {
             />
             <div className={styles.port}>
               {TIMERA_PORTPIN.map((item, index) => (
-                <PinWithDevice key={index} pin={item} />
+                <PinWithDevice key={index} pin={item} index={index} type="A" />
               ))}
             </div>
           </div>
@@ -43,13 +43,13 @@ export default function Main({ memory, isRunning, onStateChange }) {
             />
             <div className={styles.port}>
               {TIMERB_PORTPIN.map((item, index) => (
-                <PinWithDevice key={index} pin={item} />
+                <PinWithDevice key={index} pin={item} index={index} type="B" />
               ))}
             </div>
           </div>
         </div>
         <button className={styles.startbtn} onClick={onStateChange}>
-          {!isRunning ? "Start" : "Stop"}
+          {!state ? "Start" : "Stop"}
         </button>
       </div>
     </div>

@@ -15,3 +15,11 @@ export function sel(memory, selAddress, pinNumber) {
 export function setSel(memory, selAddress, pinNumber, value) {
   return setBit(memory, selAddress, pinNumber, value);
 }
+
+export function outValue(memory, outAddress, pinNumber) {
+  return getBit(memory, outAddress, pinNumber);
+}
+
+export function setOutValue(memory, outAddress, pinNumber, value) {
+  return setBit(memory, outAddress, pinNumber, value);
+}

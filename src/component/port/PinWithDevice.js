@@ -1,15 +1,102 @@
 import { Popover } from "@varld/popover";
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { BsPlus } from "react-icons/bs";
 import { MdClear } from "react-icons/md";
+import {
+  LIST_TIMERA_BLOCK,
+  LIST_TIMERB_BLOCK,
+} from "../../constant/timer.constant";
+import { useMemory } from "../../context/memory";
+import {
+  captureMode,
+  getPeriod,
+  getRatio,
+  interruptEnabled,
+  mode,
+  setInterruptFlag,
+} from "../../function/ccblock";
+import { dir, sel } from "../../function/portpin";
+import DiodeImg from "../../img/diode.svg";
+import PushButtonImg from "../../img/pushbutton.svg";
 import Diode from "../device/Diode";
 import PushButton from "../device/PushButton";
 import styles from "./PinWithDevice.module.css";
 import PortPin from "./PortPin";
-import DiodeImg from "../../img/diode.svg";
-import PushButtonImg from "../../img/pushbutton.svg";
-export default function PinWithDevice({ pin }) {
+function PinWithDevice({ pin, index, type }) {
+  const { memory, setMemory } = useMemory();
   const [device, setDevice] = useState(null);
+  const timerBlock =
+    type === "A" ? LIST_TIMERA_BLOCK[index] : LIST_TIMERB_BLOCK[index];
+
+  const handleCapture = (cm) => {
+    if (sel(memory, pin.port.selAddress)) {
+      /* Peripheral Module Function */
+      if (mode(memory, timerBlock.blockCtlAddress)) {
+        /* Capture Mode */
+        if (dir(memory, pin.port.dirAddress)) {
+          /* Output */
+        } else {
+          /* Input */
+          if (interruptEnabled(memory, timerBlock.blockCtlAddress)) {
+            /* Interrupt Enabled */
+            switch (captureMode(memory, timerBlock.blockCtlAddress)) {
+              case 0:
+                /* No Capture */
+                break;
+              case 1:
+                /* Rising Edge */
+                if (cm === 1) {
+                  setMemory(
+                    setInterruptFlag(memory, timerBlock.blockCtlAddress, 1)
+                  );
+                }
+                break;
+              case 2:
+                /* Falling Edge */
+                if (cm === 2) {
+                  setMemory(
+                    setInterruptFlag(memory, timerBlock.blockCtlAddress, 1)
+                  );
+                }
+                break;
+              case 3:
+                /* Both Edge */
+                setMemory(
+                  setInterruptFlag(memory, timerBlock.blockCtlAddress, 1)
+                );
+                break;
+              default:
+                break;
+            }
+          } else {
+            /* Interrupt Disabled */
+          }
+        }
+      } else {
+        /* Compare Mode */
+      }
+    } else {
+      /* I/O Function */
+    }
+  };
+  const handleMouseDown = () => {
+    handleCapture(2);
+  };
+  const handleMouseUp = () => {
+    handleCapture(1);
+  };
+  const currentMode =
+    sel(memory, pin.port.selAddress, pin.pinNumber) &&
+    !mode(memory, timerBlock.blockCtlAddress) &&
+    dir(memory, pin.port.dirAddress, pin.pinNumber);
+  const currentRatio = currentMode
+    ? getRatio(memory, timerBlock.ratioAddress)
+    : 0;
+  const currentPeriod = currentMode
+    ? getPeriod(memory, timerBlock.periodAddress)
+    : 0;
+
   return (
     <div className={styles.pinwithdevice}>
       <PortPin port={pin.port} pinNumber={pin.pinNumber} />
@@ -36,21 +123,34 @@ export default function PinWithDevice({ pin }) {
         </Popover>
       )}
       <div className={styles.device}>
-        {device === 0 && <Diode ratio={0.2} period={2000} />}
+        {device === 0 && <Diode ratio={currentRatio} period={currentPeriod} />}
         {device === 1 && (
-          <PushButton onMouseDown={() => {}} onMouseUp={() => {}} />
+          <PushButton onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} />
         )}
         {device !== null && (
-          <button
+          <div
             onClick={() => {
               setDevice(null);
             }}
             className={styles.deletebtn}
           >
             <MdClear size={24} />
-          </button>
+          </div>
         )}
       </div>
     </div>
   );
 }
+
+PinWithDevice.propTypes = {
+  pin: PropTypes.shape({
+    port: PropTypes.shape({
+      portNumber: PropTypes.number.isRequired,
+      dirAddress: PropTypes.number.isRequired,
+      selAddress: PropTypes.number.isRequired,
+    }).isRequired,
+    pinNumber: PropTypes.number.isRequired,
+  }).isRequired,
+};
+
+export default PinWithDevice;

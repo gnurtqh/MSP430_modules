@@ -10,8 +10,10 @@ import {
   setInterruptEnabled,
   setMode,
   setOutMode,
-  setTaccrValue,
-  taccrValue,
+  setCcrValue,
+  ccrValue,
+  outBit,
+  setOutBit,
 } from "../../function/ccblock";
 import InputNumber from "../common/InputNumber";
 import SelectComponent from "../common/SelectComponent";
@@ -27,9 +29,9 @@ function CCBlock({ index, block, type }) {
             <div>
               <InputNumber
                 label={`T${type}CCR${index} value`}
-                value={taccrValue(memory, block.blockRegAddress)}
+                value={ccrValue(memory, block.blockRegAddress)}
                 onChange={(value) =>
-                  setMemory(setTaccrValue(memory, block.blockRegAddress, value))
+                  setMemory(setCcrValue(memory, block.blockRegAddress, value))
                 }
               />
               <SelectComponent
@@ -56,6 +58,19 @@ function CCBlock({ index, block, type }) {
                   { value: 1, label: "Enable" },
                 ]}
               />
+              {mode(memory, block.blockCtlAddress) === 0 && (
+                <SelectComponent
+                  label="OUT bit"
+                  value={outBit(memory, block.blockCtlAddress)}
+                  onChange={(value) =>
+                    setMemory(setOutBit(memory, block.blockCtlAddress, value))
+                  }
+                  options={[
+                    { value: 0, label: "0" },
+                    { value: 1, label: "1" },
+                  ]}
+                />
+              )}
             </div>
             {mode(memory, block.blockCtlAddress) === 1 ? (
               <SelectComponent

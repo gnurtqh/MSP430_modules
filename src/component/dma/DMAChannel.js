@@ -104,9 +104,9 @@ function DMAChannel({ channel, ctlAddress, index }) {
               />
               <InputNumber
                 label="Source address"
-                value={srcAddress(memory, channel.daAddress)}
+                value={srcAddress(memory, channel.saAddress)}
                 onChange={(value) =>
-                  setMemory(setSrcAddress(memory, channel.daAddress, value))
+                  setMemory(setSrcAddress(memory, channel.saAddress, value))
                 }
               />
               <InputNumber

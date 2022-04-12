@@ -1,12 +1,11 @@
 import { Popover } from "@varld/popover";
-import { MdEdit } from "react-icons/md";
-import styles from "./Writer.module.css";
-import PropTypes from "prop-types";
-import InputNumber from "../common/InputNumber";
 import { useState } from "react";
-import SelectComponent from "../common/SelectComponent";
+import { MdEdit } from "react-icons/md";
 import { useMemory } from "../../context/memory";
 import { setByte, setWord } from "../../function/memory";
+import InputNumber from "../common/InputNumber";
+import SelectComponent from "../common/SelectComponent";
+import styles from "./Writer.module.css";
 
 function MemoryWriter() {
   const { memory, setMemory } = useMemory();
@@ -22,7 +21,7 @@ function MemoryWriter() {
               onChange={(value) =>
                 setElement({
                   ...element,
-                  address: ~~value > 10000 ? 10000 : ~~value,
+                  address: ~~value > 65535 ? 65535 : ~~value,
                 })
               }
             />
@@ -76,5 +75,4 @@ function MemoryWriter() {
     </Popover>
   );
 }
-MemoryWriter.propTypes = {};
 export default MemoryWriter;

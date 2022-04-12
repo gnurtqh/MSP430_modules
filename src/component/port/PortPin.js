@@ -1,5 +1,12 @@
 import { Popover } from "@varld/popover";
-import { dir, sel, setDir, setSel } from "../../function/portpin";
+import {
+  dir,
+  outValue,
+  sel,
+  setDir,
+  setOutValue,
+  setSel,
+} from "../../function/portpin";
 import styles from "./PortPin.module.css";
 import { useMemory } from "../../context/memory";
 import PropTypes from "prop-types";

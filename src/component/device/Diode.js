@@ -1,12 +1,13 @@
 import styled, { keyframes } from "styled-components";
 import styles from "./Diode.module.css";
 import PropTypes from "prop-types";
+import React from "react";
 
-function Diode({ ratio, period }) {
-  const colorCode = period < 50 ? ~~(225 - 225 * ratio) : 255;
+const Diode = React.memo(({ ratio, period }) => {
+  const colorCode = period < 50 ? ~~(255 - 255 * ratio) : 255;
   const diodePeriod = period < 50 ? 0 : period;
   const shadow =
-    period < 50
+    period < 50 && ratio !== 0
       ? `inset #660000 0 -2px 9px, rgba(255, 0, 0, ${ratio}) 0 2px 12px`
       : "inset #444444 0 -2px 9px";
   const blinkerAnimation = keyframes`
@@ -28,7 +29,7 @@ function Diode({ ratio, period }) {
       <Blink />
     </div>
   );
-}
+});
 Diode.propTypes = {
   ratio: PropTypes.number.isRequired,
   period: PropTypes.number.isRequired,
