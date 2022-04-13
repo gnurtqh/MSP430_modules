@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import Main from "./component/Main";
-import { DMACTL0_ADDRESS, LIST_CHANNEL } from "./constant/dma.constant";
-import initialMemory from "./constant/memory.constant";
-import { LIST_TIMERA_BLOCK, TACTL_ADDRESS } from "./constant/timer.constant";
-import { MemoryContext } from "./context/memory";
+import initialMemory from "./constant/memory.const";
+import { LIST_TIMERA_BLOCK, TACTL_ADDRESS } from "./constant/timer.const";
+import { MemoryContext } from "./context/memory.context";
 import {
   ccrValue,
   interruptEnabled,
@@ -13,21 +12,9 @@ import {
   setInterruptFlag,
   setPeriod,
   setRatio,
-} from "./function/ccblock";
-import {
-  desAddress,
-  desByte,
-  desInc,
-  setDmaen,
-  size,
-  srcAddress,
-  srcByte,
-  srcInc,
-  transferMode,
-  trigger,
-} from "./function/dma";
-import { getByte, getWord, setByte, setWord } from "./function/memory";
-import { clockSource, counterMode, divider } from "./function/timer";
+} from "./function/ccblock.func";
+import { clockSource, counterMode, divider } from "./function/timer.func";
+
 export default function App() {
   const [memory, setMemory] = useState(initialMemory);
   const [isRunning, setRunning] = useState(false);
@@ -62,15 +49,14 @@ export default function App() {
 }
 const updateTimer = (setMemory, ctlAddress, listCCBlock) => {
   setMemory((memory) => {
-    console.time("timer");
     const newMemory = setCurrentTimer(memory, ctlAddress, listCCBlock);
-    console.timeEnd("timer");
     return newMemory;
   });
 };
 
 const setCurrentTimer = (memory, ctlAddress, listCCBlock) => {
   let currentMemory = [...memory];
+
   const currentClockSource =
     clockSource(currentMemory, ctlAddress) === 1 ? 32000 : 1000000;
   const currentDivider = 2 ** divider(currentMemory, ctlAddress);
@@ -406,33 +392,3 @@ const setCurrentTimer = (memory, ctlAddress, listCCBlock) => {
   }
   return currentMemory;
 };
-function newAddress(increment, format, address) {
-  if (increment === 2) return address - (2 - format);
-  else if (increment === 3) return address + (2 - format);
-  else return address;
-}
-
-function copyData(memory, dmaxctlAddress, srcAddress, desAddress, temp) {
-  const src = srcByte(memory, dmaxctlAddress)
-    ? getByte(memory, srcAddress)
-    : getWord(memory, srcAddress);
-  if (desByte(memory, dmaxctlAddress)) setByte(memory, desAddress, src);
-  else setWord(memory, desAddress, src);
-  temp.sz--;
-  temp.sa = newAddress(
-    srcInc(memory, dmaxctlAddress),
-    srcByte(memory, dmaxctlAddress),
-    temp.sa
-  );
-  temp.da = newAddress(
-    desInc(memory, dmaxctlAddress),
-    desByte(memory, dmaxctlAddress),
-    temp.da
-  );
-}
-
-function resetTemp(memory, temp, channel) {
-  temp.sa = srcAddress(memory, channel.saAddress);
-  temp.da = desAddress(memory, channel.daAddress);
-  temp.sz = size(memory, channel.szAddress);
-}

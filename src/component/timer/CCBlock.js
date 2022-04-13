@@ -1,24 +1,11 @@
 import { Popover } from "@varld/popover";
 import PropTypes from "prop-types";
-import { useMemory } from "../../context/memory";
-import {
-  captureMode,
-  interruptEnabled,
-  mode,
-  outMode,
-  setCaptureMode,
-  setInterruptEnabled,
-  setMode,
-  setOutMode,
-  setCcrValue,
-  ccrValue,
-  outBit,
-  setOutBit,
-} from "../../function/ccblock";
+import { useMemory } from "../../context/memory.context";
+import ccblock from "../../function/ccblock.func";
 import InputNumber from "../common/InputNumber";
 import SelectComponent from "../common/SelectComponent";
 import styles from "./CCBlock.module.css";
-
+import { blockOption } from "../../constant/ccblock.const";
 function CCBlock({ index, block, type }) {
   const { memory, setMemory } = useMemory();
   return (
@@ -29,82 +16,71 @@ function CCBlock({ index, block, type }) {
             <div>
               <InputNumber
                 label={`T${type}CCR${index} value`}
-                value={ccrValue(memory, block.blockRegAddress)}
+                value={ccblock.ccrValue(memory, block.blockRegAddress)}
                 onChange={(value) =>
-                  setMemory(setCcrValue(memory, block.blockRegAddress, value))
+                  setMemory(
+                    ccblock.setCcrValue(memory, block.blockRegAddress, value)
+                  )
                 }
               />
               <SelectComponent
                 label="Block mode"
-                value={mode(memory, block.blockCtlAddress)}
+                value={ccblock.mode(memory, block.blockCtlAddress)}
                 onChange={(value) =>
-                  setMemory(setMode(memory, block.blockCtlAddress, value))
+                  setMemory(
+                    ccblock.setMode(memory, block.blockCtlAddress, value)
+                  )
                 }
-                options={[
-                  { value: 0, label: "Compare mode" },
-                  { value: 1, label: "Capture mode" },
-                ]}
+                options={blockOption.mode}
               />
               <SelectComponent
                 label="Interrupt"
-                value={interruptEnabled(memory, block.blockCtlAddress)}
+                value={ccblock.interruptEnabled(memory, block.blockCtlAddress)}
                 onChange={(value) =>
                   setMemory(
-                    setInterruptEnabled(memory, block.blockCtlAddress, value)
+                    ccblock.setInterruptEnabled(
+                      memory,
+                      block.blockCtlAddress,
+                      value
+                    )
                   )
                 }
-                options={[
-                  { value: 0, label: "Disable" },
-                  { value: 1, label: "Enable" },
-                ]}
+                options={blockOption.interruptEnabled}
               />
-              {mode(memory, block.blockCtlAddress) === 0 && (
+              {ccblock.mode(memory, block.blockCtlAddress) === 0 && (
                 <SelectComponent
                   label="OUT bit"
-                  value={outBit(memory, block.blockCtlAddress)}
+                  value={ccblock.outBit(memory, block.blockCtlAddress)}
                   onChange={(value) =>
-                    setMemory(setOutBit(memory, block.blockCtlAddress, value))
+                    setMemory(
+                      ccblock.setOutBit(memory, block.blockCtlAddress, value)
+                    )
                   }
-                  options={[
-                    { value: 0, label: "0" },
-                    { value: 1, label: "1" },
-                  ]}
+                  options={blockOption.outBit}
                 />
               )}
             </div>
-            {mode(memory, block.blockCtlAddress) === 1 ? (
+            {ccblock.mode(memory, block.blockCtlAddress) === 1 ? (
               <SelectComponent
                 label="Capture mode"
-                value={captureMode(memory, block.blockCtlAddress)}
+                value={ccblock.captureMode(memory, block.blockCtlAddress)}
                 onChange={(value) =>
                   setMemory(
-                    setCaptureMode(memory, block.blockCtlAddress, value)
+                    ccblock.setCaptureMode(memory, block.blockCtlAddress, value)
                   )
                 }
-                options={[
-                  { value: 0, label: "No capture" },
-                  { value: 1, label: "Capture on rising edge" },
-                  { value: 2, label: "Capture on falling edge" },
-                  { value: 3, label: "Capture on rising edge" },
-                ]}
+                options={blockOption.captureMode}
               />
             ) : (
               <SelectComponent
                 label="Output mode"
-                value={outMode(memory, block.blockCtlAddress)}
+                value={ccblock.outMode(memory, block.blockCtlAddress)}
                 onChange={(value) =>
-                  setMemory(setOutMode(memory, block.blockCtlAddress, value))
+                  setMemory(
+                    ccblock.setOutMode(memory, block.blockCtlAddress, value)
+                  )
                 }
-                options={[
-                  { value: 0, label: "OUT bit value" },
-                  { value: 1, label: "Set" },
-                  { value: 2, label: "Toggle/reset" },
-                  { value: 3, label: "Set/reset" },
-                  { value: 4, label: "Toggle" },
-                  { value: 5, label: "Reset" },
-                  { value: 6, label: "Toggle/set" },
-                  { value: 7, label: " Reset/set" },
-                ]}
+                options={blockOption.outMode}
               />
             )}
           </div>

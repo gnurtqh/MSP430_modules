@@ -1,31 +1,11 @@
 import { Popover } from "@varld/popover";
-import {
-  desAddress,
-  desByte,
-  desInc,
-  dmaen,
-  setDesAddress,
-  setDesByte,
-  setDesInc,
-  setDmaen,
-  setSize,
-  setSrcAddress,
-  setSrcByte,
-  setSrcInc,
-  setTransferMode,
-  setTrigger,
-  size,
-  srcAddress,
-  srcByte,
-  srcInc,
-  transferMode,
-  trigger,
-} from "../../function/dma";
+import dmachannel from "../../function/dma.func";
 import styles from "./DMAChannel.module.css";
-import { useMemory } from "../../context/memory";
+import { useMemory } from "../../context/memory.context";
 import SelectComponent from "../common/SelectComponent";
 import PropTypes from "prop-types";
 import InputNumber from "../common/InputNumber";
+import { channelOption } from "../../constant/dmachannel.const";
 
 function DMAChannel({ channel, ctlAddress, index }) {
   const { memory, setMemory } = useMemory();
@@ -38,116 +18,130 @@ function DMAChannel({ channel, ctlAddress, index }) {
             <div>
               <SelectComponent
                 label="DMA enable"
-                value={dmaen(memory, channel.channelCtlAddress)}
+                value={dmachannel.dmaen(memory, channel.channelCtlAddress)}
                 onChange={(value) =>
-                  setMemory(setDmaen(memory, channel.channelCtlAddress, value))
+                  setMemory(
+                    dmachannel.setDmaen(
+                      memory,
+                      channel.channelCtlAddress,
+                      value
+                    )
+                  )
                 }
-                options={[
-                  { value: 0, label: "Disable" },
-                  { value: 1, label: "Enable" },
-                ]}
+                options={channelOption.dmaen}
               />
               <SelectComponent
                 label="Trigger"
-                value={trigger(memory, ctlAddress, index)}
+                value={dmachannel.trigger(memory, ctlAddress, index)}
                 onChange={(value) => {
-                  setMemory(setTrigger(memory, ctlAddress, index, value));
+                  setMemory(
+                    dmachannel.setTrigger(memory, ctlAddress, index, value)
+                  );
                 }}
-                options={[
-                  { value: 7, label: "TACCR0 CCIFG bit" },
-                  { value: 1, label: "TACCR2 CCIFG bit" },
-                  { value: 8, label: "TBCCR0 CCIFG bit" },
-                  { value: 2, label: "TBCCR2 CCIFG bit" },
-                ]}
+                options={channelOption.trigger}
               />
               <SelectComponent
                 label="Transfer mode"
-                value={transferMode(memory, channel.channelCtlAddress)}
+                value={dmachannel.transferMode(
+                  memory,
+                  channel.channelCtlAddress
+                )}
                 onChange={(value) =>
                   setMemory(
-                    setTransferMode(memory, channel.channelCtlAddress, value)
+                    dmachannel.setTransferMode(
+                      memory,
+                      channel.channelCtlAddress,
+                      value
+                    )
                   )
                 }
-                options={[
-                  { value: 0, label: "Single transfer" },
-                  { value: 4, label: "Repeated single transfer" },
-                  { value: 1, label: "Block transfer" },
-                  { value: 5, label: "Repeated block transfer" },
-                ]}
+                options={channelOption.transferMode}
               />
             </div>
             <div>
               <SelectComponent
                 label="Source address"
-                value={srcInc(memory, channel.channelCtlAddress)}
+                value={dmachannel.srcInc(memory, channel.channelCtlAddress)}
                 onChange={(value) =>
-                  setMemory(setSrcInc(memory, channel.channelCtlAddress, value))
+                  setMemory(
+                    dmachannel.setSrcInc(
+                      memory,
+                      channel.channelCtlAddress,
+                      value
+                    )
+                  )
                 }
-                options={[
-                  { value: 0, label: "is unchanged" },
-                  { value: 2, label: "is decremented" },
-                  { value: 3, label: "is incremented" },
-                ]}
+                options={channelOption.increment}
               />
               <SelectComponent
                 label="Source format"
-                value={srcByte(memory, channel.channelCtlAddress)}
+                value={dmachannel.srcByte(memory, channel.channelCtlAddress)}
                 onChange={(value) =>
                   setMemory(
-                    setSrcByte(memory, channel.channelCtlAddress, value)
+                    dmachannel.setSrcByte(
+                      memory,
+                      channel.channelCtlAddress,
+                      value
+                    )
                   )
                 }
-                options={[
-                  { value: 0, label: "Word" },
-                  { value: 1, label: "Byte" },
-                ]}
+                options={channelOption.format}
               />
               <InputNumber
                 label="Source address"
-                value={srcAddress(memory, channel.saAddress)}
+                value={dmachannel.srcAddress(memory, channel.saAddress)}
                 onChange={(value) =>
-                  setMemory(setSrcAddress(memory, channel.saAddress, value))
+                  setMemory(
+                    dmachannel.setSrcAddress(memory, channel.saAddress, value)
+                  )
                 }
               />
               <InputNumber
                 label="Size"
-                value={size(memory, channel.szAddress)}
+                value={dmachannel.size(memory, channel.szAddress)}
                 onChange={(value) =>
-                  setMemory(setSize(memory, channel.szAddress, value))
+                  setMemory(
+                    dmachannel.setSize(memory, channel.szAddress, value)
+                  )
                 }
               />
             </div>
             <div>
               <SelectComponent
                 label="Destination address"
-                value={desInc(memory, channel.channelCtlAddress)}
+                value={dmachannel.desInc(memory, channel.channelCtlAddress)}
                 onChange={(value) =>
-                  setMemory(setDesInc(memory, channel.channelCtlAddress, value))
+                  setMemory(
+                    dmachannel.setDesInc(
+                      memory,
+                      channel.channelCtlAddress,
+                      value
+                    )
+                  )
                 }
-                options={[
-                  { value: 0, label: "is unchanged" },
-                  { value: 2, label: "is decremented" },
-                  { value: 3, label: "is incremented" },
-                ]}
+                options={channelOption.increment}
               />
               <SelectComponent
                 label="Destination format"
-                value={desByte(memory, channel.channelCtlAddress)}
+                value={dmachannel.desByte(memory, channel.channelCtlAddress)}
                 onChange={(value) =>
                   setMemory(
-                    setDesByte(memory, channel.channelCtlAddress, value)
+                    dmachannel.setDesByte(
+                      memory,
+                      channel.channelCtlAddress,
+                      value
+                    )
                   )
                 }
-                options={[
-                  { value: 0, label: "Word" },
-                  { value: 1, label: "Byte" },
-                ]}
+                options={channelOption.format}
               />
               <InputNumber
                 label="Destination address"
-                value={desAddress(memory, channel.daAddress)}
+                value={dmachannel.desAddress(memory, channel.daAddress)}
                 onChange={(value) =>
-                  setMemory(setDesAddress(memory, channel.daAddress, value))
+                  setMemory(
+                    dmachannel.setDesAddress(memory, channel.daAddress, value)
+                  )
                 }
               />
             </div>

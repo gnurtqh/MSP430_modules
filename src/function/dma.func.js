@@ -7,7 +7,30 @@ import {
   setByte,
   set16bitRegister,
   setWord,
-} from "./memory";
+} from "./memory.func";
+
+export default {
+  desAddress,
+  desByte,
+  desInc,
+  dmaen,
+  setDesAddress,
+  setDesByte,
+  setDesInc,
+  setDmaen,
+  setSize,
+  setSrcAddress,
+  setSrcByte,
+  setSrcInc,
+  setTransferMode,
+  setTrigger,
+  size,
+  srcAddress,
+  srcByte,
+  srcInc,
+  transferMode,
+  trigger,
+};
 
 export function trigger(memory, dmactl0Address, channelIndex) {
   const registerValue = getWord(memory, dmactl0Address);
@@ -102,9 +125,7 @@ export function desAddress(memory, daAddress) {
 }
 
 export function setDesAddress(memory, daAddress, value) {
-  const newMemory = setWord(memory, daAddress, value & 0xffff);
-  if (value < 65536) return newMemory;
-  else return setWord(newMemory, daAddress, value >> 16);
+  return setWord(memory, daAddress, value);
 }
 export function srcAddress(memory, saAddress) {
   const firstWord = getWord(memory, saAddress);
@@ -113,9 +134,7 @@ export function srcAddress(memory, saAddress) {
 }
 
 export function setSrcAddress(memory, saAddress, value) {
-  const newMemory = setWord(memory, saAddress, value & 0xffff);
-  if (value < 65536) return newMemory;
-  else return setWord(newMemory, saAddress, value >> 16);
+  return setWord(memory, saAddress, value);
 }
 export function size(memory, szAddress) {
   return getWord(memory, szAddress);

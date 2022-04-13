@@ -5,8 +5,30 @@ import {
   setBit,
   set16bitRegister,
   setWord,
-} from "./memory";
-
+} from "./memory.func";
+export default {
+  ccrValue,
+  setCcrValue,
+  captureMode,
+  setCaptureMode,
+  mode,
+  setMode,
+  outMode,
+  setOutMode,
+  outBit,
+  setOutBit,
+  interruptEnabled,
+  setInterruptEnabled,
+  interruptFlag,
+  setInterruptFlag,
+  getPeriod,
+  setPeriod,
+  getRatio,
+  setRatio,
+  getPeriodIntrAddress,
+  setPeriodIntrAddress,
+  resetTemp,
+};
 export function ccrValue(memory, taccrAddress) {
   return getWord(memory, taccrAddress);
 }

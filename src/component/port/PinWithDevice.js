@@ -6,8 +6,8 @@ import { MdClear } from "react-icons/md";
 import {
   LIST_TIMERA_BLOCK,
   LIST_TIMERB_BLOCK,
-} from "../../constant/timer.constant";
-import { useMemory } from "../../context/memory";
+} from "../../constant/timer.const";
+import { useMemory } from "../../context/memory.context";
 import {
   captureMode,
   getPeriod,
@@ -15,8 +15,8 @@ import {
   interruptEnabled,
   mode,
   setInterruptFlag,
-} from "../../function/ccblock";
-import { dir, sel } from "../../function/portpin";
+} from "../../function/ccblock.func";
+import { dir, sel } from "../../function/portpin.func";
 import DiodeImg from "../../img/diode.svg";
 import PushButtonImg from "../../img/pushbutton.svg";
 import Diode from "../device/Diode";

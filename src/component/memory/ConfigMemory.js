@@ -8,7 +8,7 @@ import SelectComponent from "../common/SelectComponent";
 function ConfigMemory({ start, onStartChange, numberType, onTypeChange }) {
   return (
     <Popover
-      popover={({ close }) => {
+      popover={() => {
         return (
           <div className="popover">
             <InputNumber

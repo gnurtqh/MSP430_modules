@@ -46,11 +46,16 @@ export function getElementMemory(number) {
 
 export function setWord(memory, address, value) {
   const tempMemory = [...memory];
-  if (value < 0 || address % 2 || address < 256 || value === null)
-    return tempMemory;
-  else {
+  if (
+    value >= 0 &&
+    value <= 65535 &&
+    address % 2 === 0 &&
+    address >= 256 &&
+    value !== null
+  ) {
     tempMemory[address] = value & 0xff;
     tempMemory[address + 1] = (value & 0xffff) >> 8;
+    console.log(value);
   }
   return tempMemory;
 }
@@ -61,10 +66,11 @@ export function setByte(memory, address, value) {
     (address >= 256 && address <= 511) ||
     address < 0 ||
     value < 0 ||
-    value === null
+    value === null ||
+    value > 255
   )
     return tempMemory;
-  else tempMemory[address] = value & 0xff;
+  else tempMemory[address] = value;
   return tempMemory;
 }
 

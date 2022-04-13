@@ -1,8 +1,8 @@
 import { Popover } from "@varld/popover";
 import { useState } from "react";
 import { MdEdit } from "react-icons/md";
-import { useMemory } from "../../context/memory";
-import { setByte, setWord } from "../../function/memory";
+import { useMemory } from "../../context/memory.context";
+import { setByte, setWord } from "../../function/memory.func";
 import InputNumber from "../common/InputNumber";
 import SelectComponent from "../common/SelectComponent";
 import styles from "./Writer.module.css";

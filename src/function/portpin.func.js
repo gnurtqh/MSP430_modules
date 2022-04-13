@@ -1,4 +1,4 @@
-import { getBit, setBit } from "./memory";
+import { getBit, setBit } from "./memory.func";
 
 export function dir(memory, dirAddress, pinNumber) {
   return getBit(memory, dirAddress, pinNumber);

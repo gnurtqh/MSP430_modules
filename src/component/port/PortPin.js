@@ -6,9 +6,9 @@ import {
   setDir,
   setOutValue,
   setSel,
-} from "../../function/portpin";
+} from "../../function/portpin.func";
 import styles from "./PortPin.module.css";
-import { useMemory } from "../../context/memory";
+import { useMemory } from "../../context/memory.context";
 import PropTypes from "prop-types";
 import SelectComponent from "../common/SelectComponent";
 function PortPin({ port, pinNumber }) {

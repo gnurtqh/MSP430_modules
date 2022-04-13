@@ -1,11 +1,11 @@
-import { DMACTL0_ADDRESS, LIST_CHANNEL } from "../constant/dma.constant";
-import { TIMERA_PORTPIN, TIMERB_PORTPIN } from "../constant/port.constant";
+import { DMACTL0_ADDRESS, LIST_CHANNEL } from "../constant/dma.const";
+import { TIMERA_PORTPIN, TIMERB_PORTPIN } from "../constant/port.const";
 import {
   LIST_TIMERA_BLOCK,
   LIST_TIMERB_BLOCK,
   TACTL_ADDRESS,
   TBCTL_ADDRESS,
-} from "../constant/timer.constant";
+} from "../constant/timer.const";
 import DMA from "./dma/DMA";
 import styles from "./Main.module.css";
 import Memory from "./memory/Memory";
