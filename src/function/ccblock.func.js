@@ -6,7 +6,7 @@ import {
   set16bitRegister,
   setWord,
 } from "./memory.func";
-export default {
+const block = {
   ccrValue,
   setCcrValue,
   captureMode,
@@ -27,8 +27,11 @@ export default {
   setRatio,
   getPeriodIntrAddress,
   setPeriodIntrAddress,
-  resetTemp,
+  resetBlock,
 };
+
+export default block;
+
 export function ccrValue(memory, taccrAddress) {
   return getWord(memory, taccrAddress);
 }
@@ -128,8 +131,8 @@ export function setPeriodIntrAddress(memory, periodIntrAddress, value) {
   return setWord(memory, periodIntrAddress, value);
 }
 
-export function resetTemp(memory, block) {
-  const newMemory = setRatio(memory, block.ratioAddress, 0);
+export function resetBlock(memory, block) {
+  let newMemory = setRatio(memory, block.ratioAddress, 0);
   newMemory = setPeriod(newMemory, block.periodAddress, 0);
   newMemory = setPeriodIntrAddress(newMemory, block.periodIntrAddress, 0);
   return newMemory;

@@ -8,14 +8,7 @@ import {
   LIST_TIMERB_BLOCK,
 } from "../../constant/timer.const";
 import { useMemory } from "../../context/memory.context";
-import {
-  captureMode,
-  getPeriod,
-  getRatio,
-  interruptEnabled,
-  mode,
-  setInterruptFlag,
-} from "../../function/ccblock.func";
+import block from "../../function/ccblock.func";
 import { dir, sel } from "../../function/portpin.func";
 import DiodeImg from "../../img/diode.svg";
 import PushButtonImg from "../../img/pushbutton.svg";
@@ -32,15 +25,15 @@ function PinWithDevice({ pin, index, type }) {
   const handleCapture = (cm) => {
     if (sel(memory, pin.port.selAddress)) {
       /* Peripheral Module Function */
-      if (mode(memory, timerBlock.blockCtlAddress)) {
+      if (block.mode(memory, timerBlock.blockCtlAddress)) {
         /* Capture Mode */
         if (dir(memory, pin.port.dirAddress)) {
           /* Output */
         } else {
           /* Input */
-          if (interruptEnabled(memory, timerBlock.blockCtlAddress)) {
+          if (block.interruptEnabled(memory, timerBlock.blockCtlAddress)) {
             /* Interrupt Enabled */
-            switch (captureMode(memory, timerBlock.blockCtlAddress)) {
+            switch (block.captureMode(memory, timerBlock.blockCtlAddress)) {
               case 0:
                 /* No Capture */
                 break;
@@ -48,7 +41,11 @@ function PinWithDevice({ pin, index, type }) {
                 /* Rising Edge */
                 if (cm === 1) {
                   setMemory(
-                    setInterruptFlag(memory, timerBlock.blockCtlAddress, 1)
+                    block.setInterruptFlag(
+                      memory,
+                      timerBlock.blockCtlAddress,
+                      1
+                    )
                   );
                 }
                 break;
@@ -56,14 +53,18 @@ function PinWithDevice({ pin, index, type }) {
                 /* Falling Edge */
                 if (cm === 2) {
                   setMemory(
-                    setInterruptFlag(memory, timerBlock.blockCtlAddress, 1)
+                    block.setInterruptFlag(
+                      memory,
+                      timerBlock.blockCtlAddress,
+                      1
+                    )
                   );
                 }
                 break;
               case 3:
                 /* Both Edge */
                 setMemory(
-                  setInterruptFlag(memory, timerBlock.blockCtlAddress, 1)
+                  block.setInterruptFlag(memory, timerBlock.blockCtlAddress, 1)
                 );
                 break;
               default:
@@ -88,13 +89,13 @@ function PinWithDevice({ pin, index, type }) {
   };
   const currentMode =
     sel(memory, pin.port.selAddress, pin.pinNumber) &&
-    !mode(memory, timerBlock.blockCtlAddress) &&
+    !block.mode(memory, timerBlock.blockCtlAddress) &&
     dir(memory, pin.port.dirAddress, pin.pinNumber);
   const currentRatio = currentMode
-    ? getRatio(memory, timerBlock.ratioAddress)
+    ? block.getRatio(memory, timerBlock.ratioAddress)
     : 0;
   const currentPeriod = currentMode
-    ? getPeriod(memory, timerBlock.periodAddress)
+    ? block.getPeriod(memory, timerBlock.periodAddress)
     : 0;
 
   return (

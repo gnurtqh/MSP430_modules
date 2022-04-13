@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { DMACTL0_ADDRESS, LIST_CHANNEL } from "../constant/dma.const";
 import { TIMERA_PORTPIN, TIMERB_PORTPIN } from "../constant/port.const";
 import {
@@ -10,9 +11,11 @@ import DMA from "./dma/DMA";
 import styles from "./Main.module.css";
 import Memory from "./memory/Memory";
 import PinWithDevice from "./port/PinWithDevice";
+import Setting from "./Setting";
 import Timer from "./timer/Timer";
 
 export default function Main({ memory, state, onStateChange }) {
+  const [scale, setScale] = useState(0);
   return (
     <div className={styles.main}>
       <div className={styles.board}>
@@ -27,6 +30,8 @@ export default function Main({ memory, state, onStateChange }) {
               type="A"
               ctlAddress={TACTL_ADDRESS}
               listCCBlock={LIST_TIMERA_BLOCK}
+              scale={scale}
+              state={state}
             />
             <div className={styles.port}>
               {TIMERA_PORTPIN.map((item, index) => (
@@ -40,6 +45,8 @@ export default function Main({ memory, state, onStateChange }) {
               type="B"
               ctlAddress={TBCTL_ADDRESS}
               listCCBlock={LIST_TIMERB_BLOCK}
+              scale={scale}
+              state={state}
             />
             <div className={styles.port}>
               {TIMERB_PORTPIN.map((item, index) => (
@@ -51,6 +58,8 @@ export default function Main({ memory, state, onStateChange }) {
         <button className={styles.startbtn} onClick={onStateChange}>
           {!state ? "Start" : "Stop"}
         </button>
+
+        <Setting scale={scale} onScaleChange={setScale} />
       </div>
     </div>
   );

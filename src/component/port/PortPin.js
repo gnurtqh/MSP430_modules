@@ -1,16 +1,9 @@
 import { Popover } from "@varld/popover";
-import {
-  dir,
-  outValue,
-  sel,
-  setDir,
-  setOutValue,
-  setSel,
-} from "../../function/portpin.func";
-import styles from "./PortPin.module.css";
-import { useMemory } from "../../context/memory.context";
 import PropTypes from "prop-types";
+import { useMemory } from "../../context/memory.context";
+import { dir, sel, setDir, setSel } from "../../function/portpin.func";
 import SelectComponent from "../common/SelectComponent";
+import styles from "./PortPin.module.css";
 function PortPin({ port, pinNumber }) {
   const { memory, setMemory } = useMemory();
   return (

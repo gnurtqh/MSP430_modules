@@ -6,10 +6,11 @@ import SelectComponent from "../common/SelectComponent";
 import PropTypes from "prop-types";
 import InputNumber from "../common/InputNumber";
 import { channelOption } from "../../constant/dmachannel.const";
+import { useEffect } from "react";
 
 function DMAChannel({ channel, ctlAddress, index }) {
   const { memory, setMemory } = useMemory();
-
+  useEffect(() => {}, []);
   return (
     <Popover
       popover={() => {

@@ -1,0 +1,58 @@
+.configbtn {
+  width: 45px;
+  height: 24px;
+  font-size: 80%;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  border-radius: 6px;
+  background: #f5f5f5;
+  box-shadow: rgb(255, 255, 255) 1.76px -1.76px 3.52px 0px,
+    rgb(204, 204, 204) -1.76px 1.76px 3.52px 0px;
+  transition: box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+.configbtn:active {
+  box-shadow: 0.1em -0.1em 0.2em transparent, -0.1em 0.1em 0.2em transparent,
+    inset 0.1em -0.1em 0.3em 0.1em #fff, inset -0.1em 0.1em 0.4em #ccc;
+}
+.scale {
+  position: absolute;
+  width: 94px;
+  right: 56px;
+  top: 24px;
+}
+
+.label{
+  font-size: 80%;
+  padding: 4px;
+  font-family: sans-serif;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 120px;
+  height: 4px;
+  border-radius: 2px;
+  background: #e0e0e0;
+  box-shadow: inset 20px 20px 60px #bebebe,
+            inset -20px -20px 60px #ffffff;
+  outline: none;
+}
+
+.slider:hover {
+cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 8px;
+  height: 12px;
+  border-radius: 4px;
+  background: #444;
+  cursor: e-resize;
+}

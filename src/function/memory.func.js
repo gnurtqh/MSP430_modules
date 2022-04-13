@@ -55,7 +55,6 @@ export function setWord(memory, address, value) {
   ) {
     tempMemory[address] = value & 0xff;
     tempMemory[address + 1] = (value & 0xffff) >> 8;
-    console.log(value);
   }
   return tempMemory;
 }

@@ -9,7 +9,7 @@ import {
   setWord,
 } from "./memory.func";
 
-export default {
+const dma = {
   desAddress,
   desByte,
   desInc,
@@ -32,6 +32,7 @@ export default {
   trigger,
 };
 
+export default dma;
 export function trigger(memory, dmactl0Address, channelIndex) {
   const registerValue = getWord(memory, dmactl0Address);
   const registerHexValue = (registerValue + 65536).toString(16);

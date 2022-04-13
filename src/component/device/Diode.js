@@ -5,7 +5,8 @@ import React from "react";
 
 const Diode = React.memo(({ ratio, period }) => {
   const colorCode = period < 50 ? ~~(255 - 255 * ratio) : 255;
-  const diodePeriod = period < 50 ? 0 : period;
+  let duration = period < 50 ? 0 : period;
+  duration = duration > 10000 ? duration / 1000 + "s" : duration + "ms";
   const shadow =
     period < 50 && ratio !== 0
       ? `inset #660000 0 -2px 9px, rgba(255, 0, 0, ${ratio}) 0 2px 12px`
@@ -22,7 +23,7 @@ const Diode = React.memo(({ ratio, period }) => {
     background-color: rgb(255, ${colorCode}, ${colorCode});
     border-radius: 50%;
     box-shadow: rgba(0, 0, 0, 0.2) 0 -2px 7px 2px, ${shadow};
-    animation: ${blinkerAnimation} ${diodePeriod}ms steps(1, end) infinite;
+    animation: ${blinkerAnimation} ${duration} steps(1, end) infinite;
   `;
   return (
     <div className={styles.diode}>
