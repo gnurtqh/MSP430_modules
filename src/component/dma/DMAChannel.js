@@ -1,16 +1,67 @@
 import { Popover } from "@varld/popover";
-import dmachannel from "../../function/dma.func";
+import dmachannel, {
+  desAddress,
+  size,
+  srcAddress,
+  trigger,
+} from "../../function/dma.func";
 import styles from "./DMAChannel.module.css";
 import { useMemory } from "../../context/memory.context";
 import SelectComponent from "../common/SelectComponent";
 import PropTypes from "prop-types";
 import InputNumber from "../common/InputNumber";
 import { channelOption } from "../../constant/dmachannel.const";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { getWord } from "../../function/memory.func";
+import {
+  getPeriodInterrupt,
+  interruptFlag,
+  mode,
+} from "../../function/ccblock.func";
 
-function DMAChannel({ channel, ctlAddress, index }) {
+function DMAChannel({ channel, ctlAddress, index, state }) {
   const { memory, setMemory } = useMemory();
-  useEffect(() => {}, []);
+  const triggerBlock = channelOption.trigger.find(
+    (item) => item.value === trigger(memory, ctlAddress, index)
+  ).block;
+  const listdependencies = [
+    state,
+    getWord(memory, ctlAddress), //
+    getWord(memory, channel.channelCtlAddress), //
+    getWord(memory, channel.saAddress), //
+    getWord(memory, channel.daAddress), //
+    getWord(memory, channel.szAddress), //
+    getPeriodInterrupt(memory, triggerBlock.periodIntrAddress),
+    interruptFlag(memory, triggerBlock.blockCtlAddress),
+  ];
+  const tempSA = useRef(srcAddress(memory, channel.saAddress));
+  const tempDA = useRef(desAddress(memory, channel.daAddress));
+  const tempSZ = useRef(size(memory, channel.szAddress));
+  const resetTemp = () => {
+    tempSA.current = srcAddress(memory, channel.saAddress);
+    tempDA.current = desAddress(memory, channel.daAddress);
+    tempSZ.current = size(memory, channel.szAddress);
+  };
+  let id = useRef(0);
+  const transfer = () => {};
+  useEffect(() => {
+    if (state) {
+      if (mode(memory, triggerBlock.blockCtlAddress)) {
+        /* Capture mode */
+        if (interruptFlag(memory, triggerBlock.blockCtlAddress)) transfer();
+      } else {
+        /* Compare mode*/
+        if (getPeriodInterrupt(memory, triggerBlock.periodIntrAddress) > 0)
+          id = setInterval(
+            () => transfer(),
+            getPeriodInterrupt(memory, triggerBlock.periodIntrAddress)
+          );
+      }
+    } else {
+      clearInterval(id);
+    }
+    return () => clearInterval(id);
+  }, listdependencies);
   return (
     <Popover
       popover={() => {
@@ -91,20 +142,22 @@ function DMAChannel({ channel, ctlAddress, index }) {
               <InputNumber
                 label="Source address"
                 value={dmachannel.srcAddress(memory, channel.saAddress)}
-                onChange={(value) =>
+                onChange={(value) => {
+                  if (value < 2 ** 16) tempSA.current = value;
                   setMemory(
                     dmachannel.setSrcAddress(memory, channel.saAddress, value)
-                  )
-                }
+                  );
+                }}
               />
               <InputNumber
                 label="Size"
                 value={dmachannel.size(memory, channel.szAddress)}
-                onChange={(value) =>
+                onChange={(value) => {
+                  if (value < 2 ** 16) tempDA.current = value;
                   setMemory(
                     dmachannel.setSize(memory, channel.szAddress, value)
-                  )
-                }
+                  );
+                }}
               />
             </div>
             <div>
@@ -139,11 +192,12 @@ function DMAChannel({ channel, ctlAddress, index }) {
               <InputNumber
                 label="Destination address"
                 value={dmachannel.desAddress(memory, channel.daAddress)}
-                onChange={(value) =>
+                onChange={(value) => {
+                  if (value < 2 ** 16) tempSZ.current = value;
                   setMemory(
                     dmachannel.setDesAddress(memory, channel.daAddress, value)
-                  )
-                }
+                  );
+                }}
               />
             </div>
           </div>

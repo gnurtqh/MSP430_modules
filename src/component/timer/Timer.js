@@ -26,7 +26,6 @@ function Timer({ listCCBlock, type, ctlAddress, scale, state }) {
     if (state) updateTimer(listCCBlock, ctlAddress, setMemory, scale);
     else setMemory((mem) => resetTimerBlock(mem, listCCBlock));
   }, listdependencies);
-
   return (
     <div className={styles.timer}>
       <div className={styles.top}>

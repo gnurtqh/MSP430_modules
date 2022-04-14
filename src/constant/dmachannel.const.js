@@ -1,13 +1,15 @@
+import { LIST_TIMERA_BLOCK, LIST_TIMERB_BLOCK } from "./timer.const";
+
 export const channelOption = {
   dmaen: [
     { value: 0, label: "Disable" },
     { value: 1, label: "Enable" },
   ],
   trigger: [
-    { value: 7, label: "TACCR0 CCIFG bit" },
-    { value: 1, label: "TACCR2 CCIFG bit" },
-    { value: 8, label: "TBCCR0 CCIFG bit" },
-    { value: 2, label: "TBCCR2 CCIFG bit" },
+    { value: 7, label: "TACCR0 CCIFG bit", block: LIST_TIMERA_BLOCK[0] },
+    { value: 1, label: "TACCR2 CCIFG bit", block: LIST_TIMERA_BLOCK[2] },
+    { value: 8, label: "TBCCR0 CCIFG bit", block: LIST_TIMERB_BLOCK[0] },
+    { value: 2, label: "TBCCR2 CCIFG bit", block: LIST_TIMERB_BLOCK[2] },
   ],
   transferMode: [
     { value: 0, label: "Single transfer" },

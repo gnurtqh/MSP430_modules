@@ -1,12 +1,14 @@
 import {
   ccrValue,
   interruptEnabled,
+  interruptFlag,
   mode,
   outBit,
   outMode,
   resetBlock,
   setInterruptFlag,
   setPeriod,
+  setPeriodInterrupt,
   setRatio,
 } from "./ccblock.func";
 import {
@@ -86,6 +88,7 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
       clockSource(currentMemory, ctlAddress) === 1 ? 32000 : 1000000;
     const currentDivider = 2 ** divider(currentMemory, ctlAddress);
     const frequency = ~~((currentClockSource * 2 ** scale) / currentDivider);
+    console.log(frequency);
     const currentCounterMode = counterMode(currentMemory, ctlAddress);
     const ccr0Value = ccrValue(currentMemory, listCCBlock[0].blockRegAddress);
     if (currentCounterMode === 0) {
@@ -97,6 +100,11 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
         const ccrBlockValue = ccrValue(currentMemory, block.blockRegAddress);
         if (currentMode === 0) {
           /* compare mode */
+          currentMemory = setPeriodInterrupt(
+            currentMemory,
+            block.periodIntrAddress,
+            ~~((1000 * ccr0Value) / frequency)
+          );
           if (
             listCCBlock.indexOf(block) === 0 &&
             [2, 3, 6, 7].includes(outMode(currentMemory, block.blockCtlAddress))
@@ -117,6 +125,7 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
                   block.ratioAddress,
                   outBit(currentMemory, block.blockCtlAddress)
                 );
+
                 break;
               case 1:
                 /* Set */
@@ -126,7 +135,6 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
                   1000
                 );
                 currentMemory = setRatio(currentMemory, block.ratioAddress, 1);
-
                 break;
               case 2:
               /* Toggle/Reset */
@@ -206,6 +214,11 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
         const ccrBlockValue = ccrValue(currentMemory, block.blockRegAddress);
         if (currentMode === 0) {
           /* compare mode */
+          currentMemory = setPeriodInterrupt(
+            currentMemory,
+            block.periodIntrAddress,
+            ~~((1000 * 2 ** 16) / frequency)
+          );
           if (
             listCCBlock.indexOf(block) === 0 &&
             [2, 3, 6, 7].includes(outMode(currentMemory, block.blockCtlAddress))
@@ -259,6 +272,7 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
                   block.periodAddress,
                   ~~((2000 * 2 ** 16) / frequency)
                 );
+                console.log(~~((2000 * 2 ** 16) / frequency));
                 currentMemory = setRatio(
                   currentMemory,
                   block.ratioAddress,
@@ -429,6 +443,7 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
           }
         } else {
           /* capture mode */
+          console.log(interruptFlag(currentMemory, block.blockCtlAddress));
           if (interruptEnabled(currentMemory, block.blockCtlAddress))
             currentMemory = setInterruptFlag(
               currentMemory,

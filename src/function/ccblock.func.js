@@ -25,8 +25,8 @@ const block = {
   setPeriod,
   getRatio,
   setRatio,
-  getPeriodIntrAddress,
-  setPeriodIntrAddress,
+  getPeriodInterrupt,
+  setPeriodInterrupt,
   resetBlock,
 };
 
@@ -116,24 +116,30 @@ export function setRatio(memory, ratioAddress, value) {
 }
 
 export function getPeriod(memory, periodAddress) {
-  return getWord(memory, periodAddress);
+  const firstWord = getWord(memory, periodAddress);
+  const secondWord = getWord(memory, periodAddress + 2);
+  return (secondWord << 16) + firstWord;
 }
 
 export function setPeriod(memory, periodAddress, value) {
-  return setWord(memory, periodAddress, value);
+  const newMemory = setWord(memory, periodAddress, value & 0xffff);
+  return setWord(newMemory, periodAddress + 2, (value >> 16) & 0xffff);
 }
 
-export function getPeriodIntrAddress(memory, periodIntrAddress) {
-  return getWord(memory, periodIntrAddress);
+export function getPeriodInterrupt(memory, periodIntrAddress) {
+  const firstWord = getWord(memory, periodIntrAddress);
+  const secondWord = getWord(memory, periodIntrAddress + 2);
+  return (secondWord << 16) + firstWord;
 }
 
-export function setPeriodIntrAddress(memory, periodIntrAddress, value) {
-  return setWord(memory, periodIntrAddress, value);
+export function setPeriodInterrupt(memory, periodIntrAddress, value) {
+  const newMemory = setWord(memory, periodIntrAddress, value & 0xffff);
+  return setWord(newMemory, periodIntrAddress + 2, (value >> 16) & 0xffff);
 }
 
 export function resetBlock(memory, block) {
   let newMemory = setRatio(memory, block.ratioAddress, 0);
   newMemory = setPeriod(newMemory, block.periodAddress, 0);
-  newMemory = setPeriodIntrAddress(newMemory, block.periodIntrAddress, 0);
+  newMemory = setPeriodInterrupt(newMemory, block.periodIntrAddress, 0);
   return newMemory;
 }

@@ -20,7 +20,11 @@ export default function Main({ memory, state, onStateChange }) {
     <div className={styles.main}>
       <div className={styles.board}>
         <div className={styles.column}>
-          <DMA ctlAddress={DMACTL0_ADDRESS} listChannel={LIST_CHANNEL} />
+          <DMA
+            ctlAddress={DMACTL0_ADDRESS}
+            listChannel={LIST_CHANNEL}
+            state={state}
+          />
           <Memory memory={memory} />
         </div>
 

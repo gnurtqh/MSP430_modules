@@ -2,7 +2,7 @@ import DMAChannel from "./DMAChannel";
 import styles from "./DMA.module.css";
 import PropTypes from "prop-types";
 
-function DMA({ listChannel, ctlAddress }) {
+function DMA({ listChannel, ctlAddress, state }) {
   return (
     <div className={styles.dma}>
       <div className={styles.top}>
@@ -15,6 +15,7 @@ function DMA({ listChannel, ctlAddress }) {
             key={index}
             index={index}
             channel={item}
+            state={state}
           />
         ))}
       </div>

@@ -15,7 +15,7 @@ export const blockOption = {
     { value: 0, label: "No capture" },
     { value: 1, label: "Capture on rising edge" },
     { value: 2, label: "Capture on falling edge" },
-    { value: 3, label: "Capture on rising edge" },
+    { value: 3, label: "Capture on both edges" },
   ],
   outMode: [
     { value: 0, label: "OUT bit value" },

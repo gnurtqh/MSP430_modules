@@ -21,7 +21,12 @@ function PinWithDevice({ pin, index, type }) {
   const [device, setDevice] = useState(null);
   const timerBlock =
     type === "A" ? LIST_TIMERA_BLOCK[index] : LIST_TIMERB_BLOCK[index];
-
+  const setFlag = () => {
+    setMemory(block.setInterruptFlag(memory, timerBlock.blockCtlAddress, 1));
+    setTimeout(() => {
+      setMemory(block.setInterruptFlag(memory, timerBlock.blockCtlAddress, 0));
+    }, 10);
+  };
   const handleCapture = (cm) => {
     if (sel(memory, pin.port.selAddress)) {
       /* Peripheral Module Function */
@@ -40,32 +45,20 @@ function PinWithDevice({ pin, index, type }) {
               case 1:
                 /* Rising Edge */
                 if (cm === 1) {
-                  setMemory(
-                    block.setInterruptFlag(
-                      memory,
-                      timerBlock.blockCtlAddress,
-                      1
-                    )
-                  );
+                  setFlag();
                 }
+
                 break;
               case 2:
                 /* Falling Edge */
                 if (cm === 2) {
-                  setMemory(
-                    block.setInterruptFlag(
-                      memory,
-                      timerBlock.blockCtlAddress,
-                      1
-                    )
-                  );
+                  setFlag();
                 }
+
                 break;
               case 3:
                 /* Both Edge */
-                setMemory(
-                  block.setInterruptFlag(memory, timerBlock.blockCtlAddress, 1)
-                );
+                setFlag();
                 break;
               default:
                 break;
