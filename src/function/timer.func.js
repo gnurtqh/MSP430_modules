@@ -88,7 +88,6 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
       clockSource(currentMemory, ctlAddress) === 1 ? 32000 : 1000000;
     const currentDivider = 2 ** divider(currentMemory, ctlAddress);
     const frequency = ~~((currentClockSource * 2 ** scale) / currentDivider);
-    console.log(frequency);
     const currentCounterMode = counterMode(currentMemory, ctlAddress);
     const ccr0Value = ccrValue(currentMemory, listCCBlock[0].blockRegAddress);
     if (currentCounterMode === 0) {
@@ -272,7 +271,6 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
                   block.periodAddress,
                   ~~((2000 * 2 ** 16) / frequency)
                 );
-                console.log(~~((2000 * 2 ** 16) / frequency));
                 currentMemory = setRatio(
                   currentMemory,
                   block.ratioAddress,
