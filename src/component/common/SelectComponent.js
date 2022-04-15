@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import styles from "./Select.module.css";
 function SelectComponent({ value, label, onChange, options }) {
   const handleClick = (value) => {
@@ -21,17 +20,5 @@ function SelectComponent({ value, label, onChange, options }) {
     </div>
   );
 }
-
-SelectComponent.propTypes = {
-  value: PropTypes.any,
-  label: PropTypes.string,
-  onChange: PropTypes.func,
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.number,
-      label: PropTypes.string,
-    })
-  ),
-};
 
 export default SelectComponent;

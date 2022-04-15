@@ -1,5 +1,4 @@
 import { Popover } from "@varld/popover";
-import PropTypes from "prop-types";
 import { useState } from "react";
 import { BsPlus } from "react-icons/bs";
 import { MdClear } from "react-icons/md";
@@ -16,17 +15,24 @@ import Diode from "../device/Diode";
 import PushButton from "../device/PushButton";
 import styles from "./PinWithDevice.module.css";
 import PortPin from "./PortPin";
+
 function PinWithDevice({ pin, index, type }) {
   const { memory, setMemory } = useMemory();
   const [device, setDevice] = useState(null);
+
   const timerBlock =
     type === "A" ? LIST_TIMERA_BLOCK[index] : LIST_TIMERB_BLOCK[index];
   const setFlag = () => {
-    setMemory(block.setInterruptFlag(memory, timerBlock.blockCtlAddress, 1));
+    setMemory((mem) =>
+      block.setInterruptFlag(mem, timerBlock.blockCtlAddress, 1)
+    );
     setTimeout(() => {
-      setMemory(block.setInterruptFlag(memory, timerBlock.blockCtlAddress, 0));
+      setMemory((mem) =>
+        block.setInterruptFlag(mem, timerBlock.blockCtlAddress, 0)
+      );
     }, 10);
   };
+
   const handleCapture = (cm) => {
     if (sel(memory, pin.port.selAddress)) {
       /* Peripheral Module Function */
@@ -135,16 +141,5 @@ function PinWithDevice({ pin, index, type }) {
     </div>
   );
 }
-
-PinWithDevice.propTypes = {
-  pin: PropTypes.shape({
-    port: PropTypes.shape({
-      portNumber: PropTypes.number.isRequired,
-      dirAddress: PropTypes.number.isRequired,
-      selAddress: PropTypes.number.isRequired,
-    }).isRequired,
-    pinNumber: PropTypes.number.isRequired,
-  }).isRequired,
-};
 
 export default PinWithDevice;

@@ -1,5 +1,6 @@
 import {
   ccrValue,
+  getPeriodInterrupt,
   interruptEnabled,
   interruptFlag,
   mode,
@@ -102,7 +103,9 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
           currentMemory = setPeriodInterrupt(
             currentMemory,
             block.periodIntrAddress,
-            ~~((1000 * ccr0Value) / frequency)
+            interruptEnabled(currentMemory, block.blockCtlAddress)
+              ? ~~((1000 * ccr0Value) / frequency)
+              : 0
           );
           if (
             listCCBlock.indexOf(block) === 0 &&
@@ -198,12 +201,12 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
           }
         } else {
           /* capture mode */
-          if (interruptEnabled(currentMemory, block.blockCtlAddress))
-            currentMemory = setInterruptFlag(
-              currentMemory,
-              block.blockCtlAddress,
-              0
-            );
+          // if (interruptEnabled(currentMemory, block.blockCtlAddress))
+          //   currentMemory = setInterruptFlag(
+          //     currentMemory,
+          //     block.blockCtlAddress,
+          //     0
+          //   );
         }
       }
     } else if (currentCounterMode === 2) {
@@ -216,7 +219,9 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
           currentMemory = setPeriodInterrupt(
             currentMemory,
             block.periodIntrAddress,
-            ~~((1000 * 2 ** 16) / frequency)
+            interruptEnabled(currentMemory, block.blockCtlAddress)
+              ? ~~((1000 * 2 ** 16) / frequency)
+              : 0
           );
           if (
             listCCBlock.indexOf(block) === 0 &&
@@ -309,12 +314,12 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
           }
         } else {
           /* capture mode */
-          if (interruptEnabled(currentMemory, block.blockCtlAddress))
-            currentMemory = setInterruptFlag(
-              currentMemory,
-              block.blockCtlAddress,
-              0
-            );
+          // if (interruptEnabled(currentMemory, block.blockCtlAddress))
+          //   currentMemory = setInterruptFlag(
+          //     currentMemory,
+          //     block.blockCtlAddress,
+          //     0
+          //   );
         }
       }
     } else if (currentCounterMode === 3) {
@@ -441,16 +446,16 @@ export function updateTimer(listCCBlock, ctlAddress, setMemory, scale) {
           }
         } else {
           /* capture mode */
-          console.log(interruptFlag(currentMemory, block.blockCtlAddress));
-          if (interruptEnabled(currentMemory, block.blockCtlAddress))
-            currentMemory = setInterruptFlag(
-              currentMemory,
-              block.blockCtlAddress,
-              0
-            );
+          // if (interruptEnabled(currentMemory, block.blockCtlAddress))
+          //   currentMemory = setInterruptFlag(
+          //     currentMemory,
+          //     block.blockCtlAddress,
+          //     0
+          //   );
         }
       }
     }
+
     return currentMemory;
   });
 }

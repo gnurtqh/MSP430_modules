@@ -1,6 +1,5 @@
 import styled, { keyframes } from "styled-components";
 import styles from "./Diode.module.css";
-import PropTypes from "prop-types";
 import React from "react";
 
 const Diode = React.memo(({ ratio, period }) => {
@@ -31,8 +30,5 @@ const Diode = React.memo(({ ratio, period }) => {
     </div>
   );
 });
-Diode.propTypes = {
-  ratio: PropTypes.number.isRequired,
-  period: PropTypes.number.isRequired,
-};
+
 export default Diode;

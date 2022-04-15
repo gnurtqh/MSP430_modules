@@ -1,9 +1,8 @@
 import { Popover } from "@varld/popover";
 import { IoSettingsOutline } from "react-icons/io5";
-import styles from "./ConfigMemory.module.css";
-import PropTypes from "prop-types";
 import InputNumber from "../common/InputNumber";
 import SelectComponent from "../common/SelectComponent";
+import styles from "./ConfigMemory.module.css";
 
 function ConfigMemory({ start, onStartChange, numberType, onTypeChange }) {
   return (
@@ -37,10 +36,5 @@ function ConfigMemory({ start, onStartChange, numberType, onTypeChange }) {
     </Popover>
   );
 }
-ConfigMemory.propTypes = {
-  start: PropTypes.number.isRequired,
-  onStartChange: PropTypes.func.isRequired,
-  numberType: PropTypes.number.isRequired,
-  onTypeChange: PropTypes.func.isRequired,
-};
+
 export default ConfigMemory;

@@ -1,9 +1,6 @@
 import { Popover } from "@varld/popover";
 import { IoSettingsOutline } from "react-icons/io5";
-import styles from "./ConfigTimer.module.css";
 import { useMemory } from "../../context/memory.context";
-import PropTypes from "prop-types";
-
 import {
   clockSource,
   counterMode,
@@ -13,6 +10,8 @@ import {
   setDivider,
 } from "../../function/timer.func";
 import SelectComponent from "../common/SelectComponent";
+import styles from "./ConfigTimer.module.css";
+
 function ConfigTimer({ ctlAddress }) {
   const { memory, setMemory } = useMemory();
   return (
@@ -67,7 +66,5 @@ function ConfigTimer({ ctlAddress }) {
     </Popover>
   );
 }
-ConfigTimer.propTypes = {
-  ctlAddress: PropTypes.number.isRequired,
-};
+
 export default ConfigTimer;

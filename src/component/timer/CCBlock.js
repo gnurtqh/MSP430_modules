@@ -1,11 +1,10 @@
 import { Popover } from "@varld/popover";
-import PropTypes from "prop-types";
+import { blockOption } from "../../constant/ccblock.const";
 import { useMemory } from "../../context/memory.context";
 import ccblock from "../../function/ccblock.func";
 import InputNumber from "../common/InputNumber";
 import SelectComponent from "../common/SelectComponent";
 import styles from "./CCBlock.module.css";
-import { blockOption } from "../../constant/ccblock.const";
 function CCBlock({ index, block, type }) {
   const { memory, setMemory } = useMemory();
   return (
@@ -19,7 +18,7 @@ function CCBlock({ index, block, type }) {
                 value={ccblock.ccrValue(memory, block.blockRegAddress)}
                 onChange={(value) =>
                   setMemory(
-                    ccblock.setCcrValue(memory, block.blockRegAddress, value)
+                    ccblock.setCcrValue(memory, block.blockRegAddress, ~~value)
                   )
                 }
               />
@@ -92,12 +91,4 @@ function CCBlock({ index, block, type }) {
   );
 }
 
-CCBlock.propTypes = {
-  index: PropTypes.number.isRequired,
-  block: PropTypes.shape({
-    blockCtlAddress: PropTypes.number.isRequired,
-    blockRegAddress: PropTypes.number.isRequired,
-  }),
-  type: PropTypes.string.isRequired,
-};
 export default CCBlock;

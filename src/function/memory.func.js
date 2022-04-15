@@ -1,3 +1,19 @@
+const memory = {
+  getWord,
+  getByte,
+  getBit,
+  getSliceMemory,
+  getElementMemory,
+  setWord,
+  setByte,
+  setBit,
+  get16bitRegister,
+  set16bitRegister,
+  get8bitRegister,
+  set8bitRegister,
+};
+export default memory;
+
 export function getWord(memory, address) {
   if (address % 2 || address < 256) return null;
   else {
@@ -65,11 +81,10 @@ export function setByte(memory, address, value) {
     (address >= 256 && address <= 511) ||
     address < 0 ||
     value < 0 ||
-    value === null ||
-    value > 255
+    value === null
   )
     return tempMemory;
-  else tempMemory[address] = value;
+  else tempMemory[address] = value & 0xff;
   return tempMemory;
 }
 

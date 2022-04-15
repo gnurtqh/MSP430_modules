@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./PushButton.module.css";
-import PropTypes from "prop-types";
+
 function PushButton({ onMouseUp, onMouseDown }) {
   const [on, setOn] = useState(false);
   const handleMouseUp = () => {
@@ -22,8 +22,5 @@ function PushButton({ onMouseUp, onMouseDown }) {
     </button>
   );
 }
-PushButton.propTypes = {
-  onMouseUp: PropTypes.func.isRequired,
-  onMouseDown: PropTypes.func.isRequired,
-};
+
 export default PushButton;

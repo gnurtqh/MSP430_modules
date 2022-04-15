@@ -3,7 +3,7 @@ import { useState } from "react";
 import { SiSpeedtest } from "react-icons/si";
 import styles from "./Setting.module.css";
 
-export default function Setting({ scale, onScaleChange }) {
+function Setting({ scale, onScaleChange }) {
   const [value, setValue] = useState(scale);
   const scaleValue = 2 ** scale < 1 ? "1/" + 1 / 2 ** scale : 2 ** scale + "x";
   return (
@@ -44,3 +44,4 @@ export default function Setting({ scale, onScaleChange }) {
     </div>
   );
 }
+export default Setting;

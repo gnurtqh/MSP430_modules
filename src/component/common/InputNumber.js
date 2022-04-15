@@ -1,5 +1,4 @@
 import styles from "./InputNumber.module.css";
-import PropTypes from "prop-types";
 
 function InputNumber({ label, value, onChange }) {
   return (
@@ -16,9 +15,5 @@ function InputNumber({ label, value, onChange }) {
     </div>
   );
 }
-InputNumber.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
+
 export default InputNumber;

@@ -75,4 +75,5 @@ function MemoryWriter() {
     </Popover>
   );
 }
+
 export default MemoryWriter;

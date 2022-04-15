@@ -14,8 +14,12 @@ import PinWithDevice from "./port/PinWithDevice";
 import Setting from "./Setting";
 import Timer from "./timer/Timer";
 
-export default function Main({ memory, state, onStateChange }) {
+export default function Main({ memory }) {
   const [scale, setScale] = useState(0);
+  const [state, setState] = useState(false);
+  const handleStateChange = () => {
+    setState(!state);
+  };
   return (
     <div className={styles.main}>
       <div className={styles.board}>
@@ -59,7 +63,8 @@ export default function Main({ memory, state, onStateChange }) {
             </div>
           </div>
         </div>
-        <button className={styles.startbtn} onClick={onStateChange}>
+
+        <button className={styles.startbtn} onClick={handleStateChange}>
           {!state ? "Start" : "Stop"}
         </button>
 

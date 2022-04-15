@@ -1,8 +1,7 @@
 import { useState } from "react";
+import { getElementMemory, getSliceMemory } from "../../function/memory.func";
 import ConfigMemory from "./ConfigMemory";
 import styles from "./Memory.module.css";
-import PropTypes from "prop-types";
-import { getElementMemory, getSliceMemory } from "../../function/memory.func";
 import MemoryWriter from "./MemoryWriter";
 
 function Memory({ memory }) {
@@ -34,7 +33,5 @@ function Memory({ memory }) {
     </div>
   );
 }
-Memory.propTypes = {
-  memory: PropTypes.arrayOf(PropTypes.number).isRequired,
-};
+
 export default Memory;

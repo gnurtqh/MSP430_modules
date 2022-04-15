@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useMemory } from "../../context/memory.context";
 import { getWord } from "../../function/memory.func";
@@ -7,11 +6,13 @@ import CCBlock from "./CCBlock";
 import ConfigTimer from "./ConfigTimer";
 import styles from "./Timer.module.css";
 
-function Timer({ listCCBlock, type, ctlAddress, scale, state }) {
+function Timer({ listCCBlock, ctlAddress, type, scale, state }) {
   const { memory, setMemory } = useMemory();
+
   const listReg = listCCBlock.map((block) =>
     getWord(memory, block.blockRegAddress)
   );
+
   const listCtl = listCCBlock.map((block) =>
     getWord(memory, block.blockCtlAddress)
   );
@@ -22,6 +23,7 @@ function Timer({ listCCBlock, type, ctlAddress, scale, state }) {
     ...listReg,
     ...listCtl,
   ];
+
   useEffect(() => {
     if (state) updateTimer(listCCBlock, ctlAddress, setMemory, scale);
     else setMemory((mem) => resetTimerBlock(mem, listCCBlock));
@@ -40,14 +42,5 @@ function Timer({ listCCBlock, type, ctlAddress, scale, state }) {
     </div>
   );
 }
-Timer.propTypes = {
-  listCCBlock: PropTypes.arrayOf(
-    PropTypes.shape({
-      blockCtlAddress: PropTypes.number.isRequired,
-      blockRegAddress: PropTypes.number.isRequired,
-    })
-  ),
-  type: PropTypes.string.isRequired,
-  ctlAddress: PropTypes.number.isRequired,
-};
+
 export default Timer;

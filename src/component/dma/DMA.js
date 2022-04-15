@@ -1,6 +1,5 @@
 import DMAChannel from "./DMAChannel";
 import styles from "./DMA.module.css";
-import PropTypes from "prop-types";
 
 function DMA({ listChannel, ctlAddress, state }) {
   return (
@@ -22,15 +21,5 @@ function DMA({ listChannel, ctlAddress, state }) {
     </div>
   );
 }
-DMA.propTypes = {
-  listChannel: PropTypes.arrayOf(
-    PropTypes.shape({
-      channelCtlAddress: PropTypes.number.isRequired,
-      saAddress: PropTypes.number.isRequired,
-      daAddress: PropTypes.number.isRequired,
-      szAddress: PropTypes.number.isRequired,
-    })
-  ),
-  ctlAddress: PropTypes.number.isRequired,
-};
+
 export default DMA;

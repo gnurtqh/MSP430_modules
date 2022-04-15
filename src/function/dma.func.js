@@ -9,7 +9,7 @@ import {
   setWord,
 } from "./memory.func";
 
-const dma = {
+const channel = {
   desAddress,
   desByte,
   desInc,
@@ -32,7 +32,8 @@ const dma = {
   trigger,
 };
 
-export default dma;
+export default channel;
+
 export function trigger(memory, dmactl0Address, channelIndex) {
   const registerValue = getWord(memory, dmactl0Address);
   const registerHexValue = (registerValue + 65536).toString(16);
@@ -145,15 +146,92 @@ export function setSize(memory, szAddress, value) {
   return setWord(memory, szAddress, value);
 }
 
+// return next address
 export function newAddress(increment, format, address) {
   if (increment === 2) return address - (2 - format);
   if (increment === 3) return address + (2 - format);
   else return address;
 }
 
-export function copyData(memory, srcByte, desByte, srcAddress, desAddress) {
+// return memory after copying data from source to destination
+export function copyData(memory, channel, srcAddress, desAddress) {
   const src =
-    srcByte === 1 ? getByte(memory, srcAddress) : getWord(memory, srcAddress);
-  if (desByte === 1) memory = setByte(memory, desAddress, src);
-  else setWord(memory, desAddress, src);
+    srcByte(memory, channel.channelCtlAddress) === 1
+      ? getByte(memory, srcAddress)
+      : getWord(memory, srcAddress);
+  if (desByte(memory, channel.channelCtlAddress) === 1)
+    return setByte(memory, desAddress, src);
+  else return setWord(memory, desAddress, src);
+}
+
+// modify temporary variables after a transfer
+export function modifyTemp(tempSA, tempDA, tempSZ, memory, channel) {
+  tempSZ.current--;
+  tempSA.current = newAddress(
+    srcInc(memory, channel.channelCtlAddress),
+    srcByte(memory, channel.channelCtlAddress),
+    tempSA.current
+  );
+  tempDA.current = newAddress(
+    desInc(memory, channel.channelCtlAddress),
+    desByte(memory, channel.channelCtlAddress),
+    tempDA.current
+  );
+}
+
+export function resetTemp(tempSA, tempDA, tempSZ, memory, channel) {
+  tempSA.current = srcAddress(memory, channel.saAddress);
+  tempDA.current = desAddress(memory, channel.daAddress);
+  tempSZ.current = size(memory, channel.szAddress);
+}
+
+export function transfer(
+  memory,
+  channel,
+  tempSA,
+  tempDA,
+  tempSZ,
+  intervalTransferId
+) {
+  let newMem = [...memory];
+  if (dmaen(newMem, channel.channelCtlAddress)) {
+    switch (transferMode(newMem, channel.channelCtlAddress)) {
+      case 0:
+        if (tempSZ.current === 0) {
+          resetTemp(tempSA, tempDA, tempSZ, newMem, channel);
+          newMem = setDmaen(newMem, channel.channelCtlAddress, 0);
+          clearInterval(intervalTransferId.current);
+        } else {
+          newMem = copyData(newMem, channel, tempSA.current, tempDA.current);
+          modifyTemp(tempSA, tempDA, tempSZ, newMem, channel);
+        }
+        break;
+      case 1:
+        for (let i = 0; i < size(newMem, channel.szAddress); i++) {
+          newMem = copyData(newMem, channel, tempSA.current, tempDA.current);
+          modifyTemp(tempSA, tempDA, tempSZ, newMem, channel);
+        }
+        resetTemp(tempSA, tempDA, tempSZ, newMem, channel);
+        clearInterval(intervalTransferId.current);
+        break;
+      case 4:
+        if (tempSZ.current === 0) {
+          resetTemp(tempSA, tempDA, tempSZ, newMem, channel);
+        } else {
+          newMem = copyData(newMem, channel, tempSA.current, tempDA.current);
+          modifyTemp(tempSA, tempDA, tempSZ, newMem, channel);
+        }
+        break;
+      case 5:
+        for (let i = 0; i < size(newMem, channel.szAddress); i++) {
+          newMem = copyData(newMem, channel, tempSA.current, tempDA.current);
+          modifyTemp(tempSA, tempDA, tempSZ, newMem, channel);
+        }
+        resetTemp(tempSA, tempDA, tempSZ, newMem, channel);
+        break;
+      default:
+        break;
+    }
+  }
+  return newMem;
 }

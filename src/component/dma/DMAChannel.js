@@ -1,163 +1,70 @@
 import { Popover } from "@varld/popover";
-import dmachannel, {
-  desAddress,
-  desByte,
-  desInc,
-  dmaen,
-  setDmaen,
-  size,
-  srcAddress,
-  srcByte,
-  srcInc,
-  transferMode,
-  trigger,
-} from "../../function/dma.func";
-import styles from "./DMAChannel.module.css";
-import { useMemory } from "../../context/memory.context";
-import SelectComponent from "../common/SelectComponent";
-import PropTypes from "prop-types";
-import InputNumber from "../common/InputNumber";
-import { channelOption } from "../../constant/dmachannel.const";
 import { useEffect, useRef } from "react";
-import { getByte, getWord, setByte, setWord } from "../../function/memory.func";
+import { channelOption } from "../../constant/dmachannel.const";
+import { useMemory } from "../../context/memory.context";
 import {
   getPeriodInterrupt,
   interruptFlag,
   mode,
 } from "../../function/ccblock.func";
+import dmachannel, {
+  desAddress,
+  resetTemp,
+  size,
+  srcAddress,
+  transfer,
+  trigger,
+} from "../../function/dma.func";
+import InputNumber from "../common/InputNumber";
+import SelectComponent from "../common/SelectComponent";
+import styles from "./DMAChannel.module.css";
 
 function DMAChannel({ channel, ctlAddress, index, state }) {
   const { memory, setMemory } = useMemory();
+
   const triggerBlock = channelOption.trigger.find(
     (item) => item.value === trigger(memory, ctlAddress, index)
   ).block;
-  const listdependencies = [
-    state,
-    getWord(memory, ctlAddress), //
-    getWord(memory, channel.channelCtlAddress), //
-    getWord(memory, channel.saAddress), //
-    getWord(memory, channel.daAddress), //
-    getWord(memory, channel.szAddress), //
-    getPeriodInterrupt(memory, triggerBlock.periodIntrAddress),
-    interruptFlag(memory, triggerBlock.blockCtlAddress),
-  ];
+
   let tempSA = useRef(srcAddress(memory, channel.saAddress));
   let tempDA = useRef(desAddress(memory, channel.daAddress));
   let tempSZ = useRef(size(memory, channel.szAddress));
-  let intervalTransferId = useRef(0);
-  let intervalTrigger = useRef(0);
+  let intervalTransferId = useRef(null);
+  let intervalTriggerId = useRef(null);
 
-  const resetTemp = () => {
-    tempSA.current = srcAddress(memory, channel.saAddress);
-    tempDA.current = desAddress(memory, channel.daAddress);
-    tempSZ.current = size(memory, channel.szAddress);
-  };
-  const newAddress = (increment, format, address) => {
-    if (increment === 2) return address - (2 - format);
-    if (increment === 3) return address + (2 - format);
-    else return address;
-  };
-  const copyData = (mem, srcAddress, desAddress, setMemory) => {
-    let newMem = [...mem];
-    const src =
-      srcByte(newMem, channel.channelCtlAddress) === 1
-        ? getByte(newMem, srcAddress)
-        : getWord(newMem, srcAddress);
-    if (desByte(newMem, channel.channelCtlAddress) === 1)
-      newMem = setByte(newMem, desAddress, src);
-    else newMem = setWord(newMem, desAddress, src);
-
-    tempSZ.current--;
-    tempSA.current = newAddress(
-      srcInc(memory, channel.channelCtlAddress),
-      srcByte(memory, channel.channelCtlAddress),
-      tempSA.current
-    );
-    tempDA.current = newAddress(
-      desInc(memory, channel.channelCtlAddress),
-      desByte(memory, channel.channelCtlAddress),
-      tempDA.current
-    );
-    return newMem;
-  };
-  const transfer = (mem) => {
-    let newMem = [...mem];
-    if (dmaen(newMem, channel.channelCtlAddress)) {
-      switch (transferMode(newMem, channel.channelCtlAddress)) {
-        case 0:
-          if (tempSZ.current === 0) {
-            resetTemp();
-            newMem = setDmaen(newMem, channel.channelCtlAddress, 0);
-            clearInterval(intervalTransferId.current);
-          } else
-            newMem = copyData(
-              newMem,
-              tempSA.current,
-              tempDA.current,
-              setMemory
-            );
-
-          break;
-        case 1:
-          for (let i = 0; i < size(newMem, channel.szAddress); i++) {
-            newMem = copyData(
-              newMem,
-              tempSA.current,
-              tempDA.current,
-              setMemory
-            );
-          }
-          resetTemp();
-          clearInterval(intervalTransferId.current);
-          break;
-        case 4:
-          if (tempSZ.current === 0) {
-            resetTemp();
-          } else
-            newMem = copyData(
-              newMem,
-              tempSA.current,
-              tempDA.current,
-              setMemory
-            );
-          break;
-        case 5:
-          for (let i = 0; i < size(newMem, channel.szAddress); i++) {
-            newMem = copyData(
-              newMem,
-              tempSA.current,
-              tempDA.current,
-              setMemory
-            );
-          }
-          resetTemp();
-          break;
-        default:
-          break;
-      }
-    }
-    return newMem;
-  };
   useEffect(() => {
     if (state) {
       if (mode(memory, triggerBlock.blockCtlAddress)) {
         /* Capture mode */
-        if (interruptFlag(memory, triggerBlock.blockCtlAddress))
-          setMemory((mem) => transfer(mem));
+        if (interruptFlag(memory, triggerBlock.blockCtlAddress)) {
+          console.log("Interrupt");
+          setMemory((mem) =>
+            transfer(mem, channel, tempSA, tempDA, tempSZ, intervalTransferId)
+          );
+        }
       } else {
         /* Compare mode*/
-        if (getPeriodInterrupt(memory, triggerBlock.periodIntrAddress) > 0)
-          intervalTrigger = setInterval(
-            () => setMemory((mem) => transfer(mem)),
-            getPeriodInterrupt(memory, triggerBlock.periodIntrAddress)
-          );
+        if (getPeriodInterrupt(memory, triggerBlock.periodIntrAddress)) {
+          intervalTriggerId.current = setInterval(() => {
+            console.log(tempDA.current, tempSZ.current, tempSA.current);
+            setMemory((mem) =>
+              transfer(mem, channel, tempSA, tempDA, tempSZ, intervalTransferId)
+            );
+          }, getPeriodInterrupt(memory, triggerBlock.periodIntrAddress));
+        }
       }
     } else {
-      resetTemp();
-      clearInterval(intervalTrigger);
+      clearInterval(intervalTransferId.current);
+      clearInterval(intervalTriggerId.current);
+      resetTemp(tempSA, tempDA, tempSZ, memory, channel);
     }
-    return () => clearInterval(intervalTrigger);
-  }, listdependencies);
+
+    return () => clearInterval(intervalTriggerId.current);
+  }, [
+    state,
+    getPeriodInterrupt(memory, triggerBlock.periodIntrAddress),
+    interruptFlag(memory, triggerBlock.blockCtlAddress),
+  ]);
   return (
     <Popover
       popover={() => {
@@ -239,9 +146,14 @@ function DMAChannel({ channel, ctlAddress, index, state }) {
                 label="Source address"
                 value={dmachannel.srcAddress(memory, channel.saAddress)}
                 onChange={(value) => {
-                  if (value < 2 ** 16) tempSA.current = value;
+                  const valueNum = ~~value;
+                  if (valueNum < 2 ** 16) tempSA.current = valueNum;
                   setMemory(
-                    dmachannel.setSrcAddress(memory, channel.saAddress, value)
+                    dmachannel.setSrcAddress(
+                      memory,
+                      channel.saAddress,
+                      valueNum
+                    )
                   );
                 }}
               />
@@ -249,9 +161,10 @@ function DMAChannel({ channel, ctlAddress, index, state }) {
                 label="Size"
                 value={dmachannel.size(memory, channel.szAddress)}
                 onChange={(value) => {
-                  if (value < 2 ** 16) tempDA.current = value;
+                  const valueNum = ~~value;
+                  if (valueNum < 2 ** 16) tempSZ.current = valueNum;
                   setMemory(
-                    dmachannel.setSize(memory, channel.szAddress, value)
+                    dmachannel.setSize(memory, channel.szAddress, valueNum)
                   );
                 }}
               />
@@ -289,9 +202,14 @@ function DMAChannel({ channel, ctlAddress, index, state }) {
                 label="Destination address"
                 value={dmachannel.desAddress(memory, channel.daAddress)}
                 onChange={(value) => {
-                  if (value < 2 ** 16) tempSZ.current = value;
+                  const valueNum = ~~value;
+                  if (valueNum < 2 ** 16) tempDA.current = valueNum;
                   setMemory(
-                    dmachannel.setDesAddress(memory, channel.daAddress, value)
+                    dmachannel.setDesAddress(
+                      memory,
+                      channel.daAddress,
+                      valueNum
+                    )
                   );
                 }}
               />
@@ -304,15 +222,5 @@ function DMAChannel({ channel, ctlAddress, index, state }) {
     </Popover>
   );
 }
-DMAChannel.propTypes = {
-  channel: PropTypes.shape({
-    channelCtlAddress: PropTypes.number.isRequired,
-    saAddress: PropTypes.number.isRequired,
-    daAddress: PropTypes.number.isRequired,
-    szAddress: PropTypes.number.isRequired,
-  }),
-  ctlAddress: PropTypes.number.isRequired,
-  index: PropTypes.number.isRequired,
-};
 
 export default DMAChannel;
