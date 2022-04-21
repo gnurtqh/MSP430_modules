@@ -12,6 +12,7 @@
   cursor: pointer;
 }
 .pushbutton {
+  z-index: 3;
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -19,6 +20,7 @@
   box-shadow: -2px 2px 2px #333, 2px -2px 2px #555;
 }
 .pushbuttonon {
+  z-index: 3;
   width: 16px;
   height: 16px;
   border-radius: 50%;

@@ -9,7 +9,7 @@ function ConfigMemory({ start, onStartChange, numberType, onTypeChange }) {
     <Popover
       popover={() => {
         return (
-          <div className="popover">
+          <div className={styles.configpanel}>
             <InputNumber
               label="Display memory from"
               value={start}
@@ -23,7 +23,7 @@ function ConfigMemory({ start, onStartChange, numberType, onTypeChange }) {
               onChange={onTypeChange}
               options={[
                 { value: 0, label: "Binary" },
-                { value: 1, label: "Decimal" },
+                { value: 1, label: "Decimal" }
               ]}
             />
           </div>

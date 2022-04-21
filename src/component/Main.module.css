@@ -1,5 +1,6 @@
-body{
-  margin: 0;background-color: #f5f5f5;
+body {
+  margin: 0;
+  background-color: #f5f5f5;
 }
 .main {
   width: 100%;
@@ -9,9 +10,16 @@ body{
   align-items: center;
   background-color: #f5f5f5;
 }
-.board{
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+  cursor: not-allowed;
+}
+.board {
   display: inline-flex;
-  gap:24px;
+  gap: 24px;
   padding: 16px;
   border-radius: 20px;
   background: #f5f5f5;
@@ -19,9 +27,9 @@ body{
     rgb(204, 204, 204) -4.8px 4.8px 9.6px 0px,
     rgb(238, 238, 238) 4.8px -4.8px 4.8px 0px inset,
     rgb(255, 255, 255) -4.8px 4.8px 4.8px 0px inset;
-    position: relative;
+  position: relative;
 }
-.timerwithport{
+.timerwithport {
   display: flex;
   gap: 24px;
 }
@@ -32,8 +40,7 @@ body{
   justify-content: flex-end;
   padding-bottom: 14px;
 }
-.column{
-
+.column {
   display: inline-flex;
   flex-direction: column;
   gap: 24px;
@@ -42,6 +49,7 @@ body{
 .startbtn {
   display: inline-block;
   position: absolute;
+  z-index: 3;
   width: 94px;
   right: 56px;
   top: 200px;
@@ -60,4 +68,3 @@ body{
   box-shadow: 0.1em -0.1em 0.2em transparent, -0.1em 0.1em 0.2em transparent,
     inset 0.1em -0.1em 0.3em 0.1em #fff, inset -0.1em 0.1em 0.4em #ccc;
 }
-

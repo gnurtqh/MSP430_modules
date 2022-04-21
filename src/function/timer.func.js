@@ -1,23 +1,20 @@
 import {
   ccrValue,
-  getPeriodInterrupt,
   interruptEnabled,
-  interruptFlag,
   mode,
   outBit,
   outMode,
   resetBlock,
-  setInterruptFlag,
   setPeriod,
   setPeriodInterrupt,
-  setRatio,
+  setRatio
 } from "./ccblock.func";
 import {
   get16bitRegister,
   getBit,
   getWord,
   set16bitRegister,
-  setWord,
+  setWord
 } from "./memory.func";
 
 const timer = {
@@ -28,7 +25,7 @@ const timer = {
   divider,
   setDivider,
   counterMode,
-  setCounterMode,
+  setCounterMode
 };
 export default timer;
 export function counterValue(memory, tarAddress) {

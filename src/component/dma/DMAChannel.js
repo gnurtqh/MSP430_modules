@@ -5,7 +5,7 @@ import { useMemory } from "../../context/memory.context";
 import {
   getPeriodInterrupt,
   interruptFlag,
-  mode,
+  mode
 } from "../../function/ccblock.func";
 import dmachannel, {
   desAddress,
@@ -13,7 +13,7 @@ import dmachannel, {
   size,
   srcAddress,
   transfer,
-  trigger,
+  trigger
 } from "../../function/dma.func";
 import InputNumber from "../common/InputNumber";
 import SelectComponent from "../common/SelectComponent";
@@ -37,7 +37,6 @@ function DMAChannel({ channel, ctlAddress, index, state }) {
       if (mode(memory, triggerBlock.blockCtlAddress)) {
         /* Capture mode */
         if (interruptFlag(memory, triggerBlock.blockCtlAddress)) {
-          console.log("Interrupt");
           setMemory((mem) =>
             transfer(mem, channel, tempSA, tempDA, tempSZ, intervalTransferId)
           );
@@ -46,7 +45,6 @@ function DMAChannel({ channel, ctlAddress, index, state }) {
         /* Compare mode*/
         if (getPeriodInterrupt(memory, triggerBlock.periodIntrAddress)) {
           intervalTriggerId.current = setInterval(() => {
-            console.log(tempDA.current, tempSZ.current, tempSA.current);
             setMemory((mem) =>
               transfer(mem, channel, tempSA, tempDA, tempSZ, intervalTransferId)
             );
@@ -63,7 +61,7 @@ function DMAChannel({ channel, ctlAddress, index, state }) {
   }, [
     state,
     getPeriodInterrupt(memory, triggerBlock.periodIntrAddress),
-    interruptFlag(memory, triggerBlock.blockCtlAddress),
+    interruptFlag(memory, triggerBlock.blockCtlAddress)
   ]);
   return (
     <Popover

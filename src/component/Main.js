@@ -5,7 +5,7 @@ import {
   LIST_TIMERA_BLOCK,
   LIST_TIMERB_BLOCK,
   TACTL_ADDRESS,
-  TBCTL_ADDRESS,
+  TBCTL_ADDRESS
 } from "../constant/timer.const";
 import DMA from "./dma/DMA";
 import styles from "./Main.module.css";
@@ -23,6 +23,7 @@ export default function Main({ memory }) {
   return (
     <div className={styles.main}>
       <div className={styles.board}>
+        {state && <div className={styles.overlay} />}
         <div className={styles.column}>
           <DMA
             ctlAddress={DMACTL0_ADDRESS}
