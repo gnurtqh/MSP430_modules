@@ -26,7 +26,7 @@ git clone https://github.com/gnurtqh/msp430module
 2. Navigate to the project directory:
 
 ```
-cd equalizer
+cd msp430module
 ```
 
 3. Install the required dependencies using a package manager like npm or yarn:
