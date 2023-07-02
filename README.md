@@ -1,4 +1,4 @@
-# MSP430 MICROPROCESSOR PERIPHERAL MODULE EMULATOR
+# MSP430 MICROPROCESSOR PERIPHERAL MODULE SIMULATOR
 ## Description
 
 This project is a web application developed using ReactJS that aims to provide functionality for displaying the status of various external modules. It allows users to configure and control the operational modes of these modules, as well as simulate their interactions with external devices. 
@@ -11,7 +11,7 @@ This project is a web application developed using ReactJS that aims to provide f
 
 3. **Modeling Module Operations:** The project enables users to visualize and model the operations of the modules based on the configured settings. This feature allows users to simulate how the modules would behave in different operational modes, helping them understand the expected outcomes.
 
-4. **Emulating Module Interactions:** The application provides the ability to mimic the interactions between the external modules and external devices. Users can simulate data exchanges, message handling, or any other communication between the modules and external devices to test their functionality.
+4. **Simulating Module Interactions:** The application provides the ability to mimic the interactions between the external modules and external devices. Users can simulate data exchanges, message handling, or any other communication between the modules and external devices to test their functionality.
 
 ## Installation
 
@@ -50,7 +50,7 @@ Once the application is up and running, you can perform the following actions:
 - View the status of the external modules on the main dashboard.
 - Configure the operational modes of the modules through the settings panel.
 - Simulate module operations by adjusting the configuration and observing the results.
-- Emulate interactions between the modules and external devices to test their behavior.
+- e interactions between the modules and external devices to test their behavior.
 
 ## Contributing
 
